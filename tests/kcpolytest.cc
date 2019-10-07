@@ -58,7 +58,7 @@ static int32_t procmisc(const char* path);
 // main routine
 int main(int argc, char** argv) {
 	if (argc > 1) {
-		return kcpolytest(argc, argv)
+		return kcpolytest(argc, argv);
 	}
 	else {
 		// TODO

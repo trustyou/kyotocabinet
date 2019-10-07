@@ -46,7 +46,7 @@ static int32_t proctran(const char* path, int64_t rnum, int32_t thnum, int32_t i
 // main routine
 int main(int argc, char** argv) {
 	if (argc > 1) {
-		return kcdirtest(argc, argv)
+		return kcdirtest(argc, argv);
 	}
 	else {
 		// TODO

@@ -65,7 +65,7 @@ static int32_t proclist(int64_t rnum, int32_t rnd, int32_t etc);
 /* main routine */
 int main(int argc, char** argv) {
 	if (argc > 1) {
-		return kclangctest(argc, argv)
+		return kclangctest(argc, argv);
 	}
 	else {
 		// TODO

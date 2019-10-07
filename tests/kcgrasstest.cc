@@ -50,7 +50,7 @@ static int32_t proctran(int64_t rnum, int32_t thnum, int32_t itnum,
 // main routine
 int main(int argc, char** argv) {
 	if (argc > 1) {
-		return kcgrasstest(argc, argv)
+		return kcgrasstest(argc, argv);
 	}
 	else {
 		// TODO

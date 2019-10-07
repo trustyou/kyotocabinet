@@ -55,7 +55,7 @@ static int32_t procmisc(int64_t rnum);
 // main routine
 int main(int argc, char** argv) {
 	if (argc > 1) {
-		return kcutiltest(argc, argv)
+		return kcutiltest(argc, argv);
 	}
 	else {
 		// TODO

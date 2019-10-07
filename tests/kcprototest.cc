@@ -48,7 +48,7 @@ static int32_t proctran(const char* tname, int64_t rnum, int32_t thnum, int32_t 
 // main routine
 int main(int argc, char** argv) {
 	if (argc > 1) {
-		return kcprototest(argc, argv)
+		return kcprototest(argc, argv);
 	}
 	else {
 		// TODO

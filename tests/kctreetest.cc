@@ -54,7 +54,7 @@ static int32_t proctran(const char* path, int64_t rnum, int32_t thnum, int32_t i
 // main routine
 int main(int argc, char** argv) {
 	if (argc > 1) {
-		return kctreetest(argc, argv)
+		return kctreetest(argc, argv);
 	}
 	else {
 		// TODO
