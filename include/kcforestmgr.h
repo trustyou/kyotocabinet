@@ -12,8 +12,9 @@
  * If not, see <http://www.gnu.org/licenses/>.
  *************************************************************************************************/
 
-#include "kcforestmgr.h"
+#ifndef _KCFORESTMGR_H                        // duplication check
+#define _KCFORESTMGR_H
 
-int main(int argc, char** argv) {
-	return kcforestmgr(argc, argv);
-}
+int kcforestmgr(int argc, char** argv);
+
+#endif

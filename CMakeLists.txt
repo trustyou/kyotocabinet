@@ -45,22 +45,22 @@ set_target_properties(kyotocabinet PROPERTIES VERSION ${LIBRARY_VERSION} PUBLIC_
 
 # Binaries
 
-add_executable(kcutilmgr src/kcutilmgr.cc)
+add_executable(kcutilmgr ${SOURCE_PATH}/kcutilmgr.cc ${SOURCE_PATH}/kcutilmgr_impl.cc)
 target_link_libraries(kcutilmgr kyotocabinet)
 
-add_executable(kchashmgr src/kchashmgr.cc)
+add_executable(kchashmgr ${SOURCE_PATH}/kchashmgr.cc ${SOURCE_PATH}/kchashmgr_impl.cc)
 target_link_libraries(kchashmgr kyotocabinet)
 
-add_executable(kctreemgr src/kctreemgr.cc)
+add_executable(kctreemgr ${SOURCE_PATH}/kctreemgr.cc ${SOURCE_PATH}/kctreemgr_impl.cc)
 target_link_libraries(kctreemgr kyotocabinet)
 
-add_executable(kcdirmgr src/kcdirmgr.cc)
+add_executable(kcdirmgr ${SOURCE_PATH}/kcdirmgr.cc ${SOURCE_PATH}/kcdirmgr_impl.cc)
 target_link_libraries(kcdirmgr kyotocabinet)
 
-add_executable(kcforestmgr src/kcforestmgr.cc)
+add_executable(kcforestmgr ${SOURCE_PATH}/kcforestmgr.cc ${SOURCE_PATH}/kcforestmgr_impl.cc)
 target_link_libraries(kcforestmgr kyotocabinet)
 
-add_executable(kcpolymgr src/kcpolymgr.cc)
+add_executable(kcpolymgr ${SOURCE_PATH}/kcpolymgr.cc ${SOURCE_PATH}/kcpolymgr_impl.cc)
 target_link_libraries(kcpolymgr kyotocabinet)
 
 # Installation targets

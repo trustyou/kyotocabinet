@@ -1,5 +1,5 @@
 /*************************************************************************************************
- * The command line utility of the directory tree database
+ * The command line utility of the directory hash database
  *                                                               Copyright (C) 2009-2012 FAL Labs
  * This file is part of Kyoto Cabinet.
  * This program is free software: you can redistribute it and/or modify it under the terms of
@@ -12,8 +12,9 @@
  * If not, see <http://www.gnu.org/licenses/>.
  *************************************************************************************************/
 
-#include "kcforestmgr.h"
+#ifndef _KCDIRMGR_H                        // duplication check
+#define _KCDIRMGR_H
 
-int main(int argc, char** argv) {
-	return kcforestmgr(argc, argv);
-}
+int kcdirmgr(int argc, char** argv);
+
+#endif
