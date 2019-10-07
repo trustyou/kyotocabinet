@@ -25,6 +25,7 @@ int64_t g_memusage;                      // memory usage
 
 // function prototypes
 int main(int argc, char** argv);
+int kcstashtest(int argc, char** argv);
 static void usage();
 static void dberrprint(kc::BasicDB* db, int32_t line, const char* func);
 static void dbmetaprint(kc::BasicDB* db, bool verbose);
@@ -42,6 +43,17 @@ static int32_t proctran(int64_t rnum, int32_t thnum, int32_t itnum, int64_t bnum
 
 // main routine
 int main(int argc, char** argv) {
+	if (argc > 1) {
+		return kcstashtest(argc, argv)
+	}
+	else {
+		// TODO
+		return 0;
+	}
+}
+
+// main test routine
+int kcstashtest(int argc, char** argv) {
   g_progname = argv[0];
   const char* ebuf = kc::getenv("KCRNDSEED");
   g_randseed = ebuf ? (uint32_t)kc::atoi(ebuf) : (uint32_t)(kc::time() * 1000);

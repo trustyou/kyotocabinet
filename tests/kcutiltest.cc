@@ -29,6 +29,7 @@ int64_t g_memusage;                      // memory usage
 
 // function prototypes
 int main(int argc, char** argv);
+int kcutiltest(int argc, char** argv);
 static void usage();
 static void errprint(int32_t line, const char* format, ...);
 static void fileerrprint(kc::File* file, int32_t line, const char* func);
@@ -53,6 +54,17 @@ static int32_t procmisc(int64_t rnum);
 
 // main routine
 int main(int argc, char** argv) {
+	if (argc > 1) {
+		return kcutiltest(argc, argv)
+	}
+	else {
+		// TODO
+		return 0;
+	}
+}
+
+// main test routine
+int kcutiltest(int argc, char** argv) {
   g_progname = argv[0];
   const char* ebuf = kc::getenv("KCRNDSEED");
   g_randseed = ebuf ? (uint32_t)kc::atoi(ebuf) : (uint32_t)(kc::time() * 1000);

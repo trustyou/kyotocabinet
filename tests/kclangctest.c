@@ -38,6 +38,7 @@ const char* g_progname;                  /* program name */
 
 /* function prototypes */
 int main(int argc, char** argv);
+int kclangctest(int argc, char** argv);
 static void usage(void);
 static int64_t myrand(int64_t range);
 static void oprintf(const char* format, ...);
@@ -62,7 +63,18 @@ static int32_t proclist(int64_t rnum, int32_t rnd, int32_t etc);
 
 
 /* main routine */
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
+	if (argc > 1) {
+		return kclangctest(argc, argv)
+	}
+	else {
+		// TODO
+		return 0;
+	}
+}
+
+/* main test routine */
+int kclangctest(int argc, char** argv) {
   int32_t i, rv;
   g_progname = argv[0];
   srand(time(NULL));
