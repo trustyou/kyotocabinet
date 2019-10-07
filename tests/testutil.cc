@@ -103,6 +103,14 @@ int submitArgsToTestFunction(int (*testFunc)(int, char**), std::string params,
 	std::cin.rdbuf(in->rdbuf());
 
 	int result = submitArgsToTestFunction_private(testFunc, params);
+	
+	if (!(inputFileName.empty())) {
+		((std::ifstream*) in)->close();
+	}
+
+	if (!(outputFileName.empty())) {
+		((std::ofstream*) out)->close();
+	}
 
 	std::cin.rdbuf(cinbuf);
 	std::cout.rdbuf(coutbuf);

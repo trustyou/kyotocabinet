@@ -14,6 +14,8 @@
 
 
 #include "cmdcommon.h"
+#include "testutil.h"
+#include "kcutilmgr.h"
 
 
 // constants
@@ -22,7 +24,7 @@ const size_t FILEIOUNIT = 50;            // file I/O unit size
 
 
 // global variables
-const char* g_progname;                  // program name
+const char* gt_progname;                  // program name
 uint32_t g_randseed;                     // random seed
 int64_t g_memusage;                      // memory usage
 
@@ -58,14 +60,57 @@ int main(int argc, char** argv) {
 		return kcutiltest(argc, argv);
 	}
 	else {
-		// TODO
+		removeCasket();
+
+		assert(submitArgsToTestFunction(kcutilmgr, "version") == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "hex CMakeLists.txt", "", check_in_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "hex -d check.in", "", check_out_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "enc CMakeLists.txt", "", check_in_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "enc -d check.in", "", check_out_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "enc -hex CMakeLists.txt", "", check_in_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "enc -hex -d check.in", "", check_out_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "enc -url CMakeLists.txt", "", check_in_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "enc -url -d check.in", "", check_out_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "enc -quote CMakeLists.txt", "", check_in_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "enc -quote -d check.in", "", check_out_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "ciph -key hoge CMakeLists.txt", "", check_in_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "ciph -key hoge check.in", "", check_out_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "comp -gz CMakeLists.txt", "", check_in_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "comp -gz -d check.in", "", check_out_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "comp -lzo CMakeLists.txt", "", check_in_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "comp -lzo -d check.in", "", check_out_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "comp -lzma CMakeLists.txt", "", check_in_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "comp -lzma -d check.in", "", check_out_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "hash CMakeLists.txt", "", check_in_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "hash -fnv CMakeLists.txt", "", check_out_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "hash -path CMakeLists.txt", "", check_out_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "regex mikio CMakeLists.txt", "", check_out_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "regex -alt hirarin mikio CMakeLists.txt", "", check_out_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "conf") == 0);
+
+		removeCasket();
+
+		assert(submitArgsToTestFunction(kcutiltest, "mutex -th 4 -iv -1 10000") == 0);
+		assert(submitArgsToTestFunction(kcutiltest, "cond -th 4 -iv -1 10000") == 0);
+		assert(submitArgsToTestFunction(kcutiltest, "para -th 4 10000") == 0);
+		assert(submitArgsToTestFunction(kcutiltest, "para -th 4 -iv -1 10000") == 0);
+		assert(submitArgsToTestFunction(kcutiltest, "file -th 4 casket 10000") == 0);
+		assert(submitArgsToTestFunction(kcutiltest, "file -th 4 -rnd -msiz 1m casket 10000") == 0);
+		assert(submitArgsToTestFunction(kcutiltest, "lhmap -bnum 1000 10000") == 0);
+		assert(submitArgsToTestFunction(kcutiltest, "lhmap -rnd -bnum 1000 10000") == 0);
+		assert(submitArgsToTestFunction(kcutiltest, "thmap -bnum 1000 10000") == 0);
+		assert(submitArgsToTestFunction(kcutiltest, "thmap -rnd -bnum 1000 10000") == 0);
+		assert(submitArgsToTestFunction(kcutiltest, "talist 10000") == 0);
+		assert(submitArgsToTestFunction(kcutiltest, "talist -rnd 10000") == 0);
+		assert(submitArgsToTestFunction(kcutiltest, "misc 10000") == 0);
+		
 		return 0;
 	}
 }
 
 // main test routine
 int kcutiltest(int argc, char** argv) {
-  g_progname = argv[0];
+  gt_progname = argv[0];
   const char* ebuf = kc::getenv("KCRNDSEED");
   g_randseed = ebuf ? (uint32_t)kc::atoi(ebuf) : (uint32_t)(kc::time() * 1000);
   mysrand(g_randseed);
@@ -105,17 +150,17 @@ int kcutiltest(int argc, char** argv) {
 
 // print the usage and exit
 static void usage() {
-  eprintf("%s: test cases of the utility functions of Kyoto Cabinet\n", g_progname);
+  eprintf("%s: test cases of the utility functions of Kyoto Cabinet\n", gt_progname);
   eprintf("\n");
   eprintf("usage:\n");
-  eprintf("  %s mutex [-th num] [-iv num] rnum\n", g_progname);
-  eprintf("  %s para [-th num] [-iv num] rnum\n", g_progname);
-  eprintf("  %s cond [-th num] [-iv num] rnum\n", g_progname);
-  eprintf("  %s file [-th num] [-rnd] [-msiz num] path rnum\n", g_progname);
-  eprintf("  %s lhmap [-rnd] [-bnum num] rnum\n", g_progname);
-  eprintf("  %s thmap [-rnd] [-bnum num] rnum\n", g_progname);
-  eprintf("  %s talist [-rnd] rnum\n", g_progname);
-  eprintf("  %s misc rnum\n", g_progname);
+  eprintf("  %s mutex [-th num] [-iv num] rnum\n", gt_progname);
+  eprintf("  %s para [-th num] [-iv num] rnum\n", gt_progname);
+  eprintf("  %s cond [-th num] [-iv num] rnum\n", gt_progname);
+  eprintf("  %s file [-th num] [-rnd] [-msiz num] path rnum\n", gt_progname);
+  eprintf("  %s lhmap [-rnd] [-bnum num] rnum\n", gt_progname);
+  eprintf("  %s thmap [-rnd] [-bnum num] rnum\n", gt_progname);
+  eprintf("  %s talist [-rnd] rnum\n", gt_progname);
+  eprintf("  %s misc rnum\n", gt_progname);
   eprintf("\n");
   std::exit(1);
 }
@@ -124,7 +169,7 @@ static void usage() {
 // print formatted error information string and flush the buffer
 static void errprint(int32_t line, const char* format, ...) {
   std::string msg;
-  kc::strprintf(&msg, "%s: %d: ", g_progname, line);
+  kc::strprintf(&msg, "%s: %d: ", gt_progname, line);
   va_list ap;
   va_start(ap, format);
   kc::vstrprintf(&msg, format, ap);
@@ -137,7 +182,7 @@ static void errprint(int32_t line, const char* format, ...) {
 
 // print error message of file
 static void fileerrprint(kc::File* file, int32_t line, const char* func) {
-  oprintf("%s: %d: %s: %s: %s\n", g_progname, line, func, file->path().c_str(), file->error());
+  oprintf("%s: %d: %s: %s: %s\n", gt_progname, line, func, file->path().c_str(), file->error());
 }
 
 
