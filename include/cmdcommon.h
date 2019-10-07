@@ -58,10 +58,10 @@ const size_t RECBUFSIZL = 1024;          // buffer size for a long record
 
 
 // global variables
-uint64_t g_rnd_x = 123456789;
-uint64_t g_rnd_y = 362436069;
-uint64_t g_rnd_z = 521288629;
-uint64_t g_rnd_w = 88675123;
+static uint64_t g_rnd_x = 123456789;
+static uint64_t g_rnd_y = 362436069;
+static uint64_t g_rnd_z = 521288629;
+static uint64_t g_rnd_w = 88675123;
 
 
 // function prototypes
