@@ -71,4 +71,5 @@ install(TARGETS kyotocabinet kcutilmgr kchashmgr kctreemgr kcdirmgr kcforestmgr 
 # Tests
 
 ENABLE_TESTING()
-ADD_SUBDIRECTORY(tests)
+add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND})
+ADD_SUBDIRECTORY(tests EXCLUDE_FROM_ALL)
