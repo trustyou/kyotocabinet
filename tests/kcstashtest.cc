@@ -15,6 +15,7 @@
 
 #include <kcstashdb.h>
 #include "cmdcommon.h"
+#include "testutil.h"
 
 
 // global variables
@@ -47,7 +48,18 @@ int main(int argc, char** argv) {
 		return kcstashtest(argc, argv);
 	}
 	else {
-		// TODO
+		removeCasket();
+
+		assert(submitArgsToTestFunction(kcstashtest, "order -etc -bnum 5000 10000") == 0);
+		assert(submitArgsToTestFunction(kcstashtest, "order -th 4 -bnum 5000 10000") == 0);
+		assert(submitArgsToTestFunction(kcstashtest, "order -th 4 -rnd -etc -bnum 5000 10000") == 0);
+		assert(submitArgsToTestFunction(kcstashtest, "order -th 4 -rnd -etc -bnum 5000 10000") == 0);
+		assert(submitArgsToTestFunction(kcstashtest, "order -th 4 -rnd -etc -tran -bnum 5000 10000") == 0);
+		assert(submitArgsToTestFunction(kcstashtest, "wicked -bnum 5000 10000") == 0);
+		assert(submitArgsToTestFunction(kcstashtest, "wicked -th 4 -it 4 -bnum 5000 10000") == 0);
+		assert(submitArgsToTestFunction(kcstashtest, "tran -bnum 5000 10000") == 0);
+		assert(submitArgsToTestFunction(kcstashtest, "tran -th 2 -it 4 -bnum 5000 10000") == 0);
+
 		return 0;
 	}
 }
