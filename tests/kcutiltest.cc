@@ -60,32 +60,34 @@ int main(int argc, char** argv) {
 		return kcutiltest(argc, argv);
 	}
 	else {
+		std::string test_file = "kcutiltest.cc";
+		
 		removeCasket();
 
 		assert(submitArgsToTestFunction(kcutilmgr, "version") == 0);
-		assert(submitArgsToTestFunction(kcutilmgr, "hex CMakeLists.txt", "", check_in_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "hex " + test_file, "", check_in_file) == 0);
 		assert(submitArgsToTestFunction(kcutilmgr, "hex -d " + check_in_file, "", check_out_file) == 0);
-		assert(submitArgsToTestFunction(kcutilmgr, "enc CMakeLists.txt", "", check_in_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "enc " + test_file, "", check_in_file) == 0);
 		assert(submitArgsToTestFunction(kcutilmgr, "enc -d " + check_in_file, "", check_out_file) == 0);
-		assert(submitArgsToTestFunction(kcutilmgr, "enc -hex CMakeLists.txt", "", check_in_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "enc -hex " + test_file, "", check_in_file) == 0);
 		assert(submitArgsToTestFunction(kcutilmgr, "enc -hex -d " + check_in_file, "", check_out_file) == 0);
-		assert(submitArgsToTestFunction(kcutilmgr, "enc -url CMakeLists.txt", "", check_in_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "enc -url " + test_file, "", check_in_file) == 0);
 		assert(submitArgsToTestFunction(kcutilmgr, "enc -url -d " + check_in_file, "", check_out_file) == 0);
-		assert(submitArgsToTestFunction(kcutilmgr, "enc -quote CMakeLists.txt", "", check_in_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "enc -quote " + test_file, "", check_in_file) == 0);
 		assert(submitArgsToTestFunction(kcutilmgr, "enc -quote -d " + check_in_file, "", check_out_file) == 0);
-		assert(submitArgsToTestFunction(kcutilmgr, "ciph -key hoge CMakeLists.txt", "", check_in_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "ciph -key hoge " + test_file, "", check_in_file) == 0);
 		assert(submitArgsToTestFunction(kcutilmgr, "ciph -key hoge " + check_in_file, "", check_out_file) == 0);
-		assert(submitArgsToTestFunction(kcutilmgr, "comp -gz CMakeLists.txt", "", check_in_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "comp -gz " + test_file, "", check_in_file) == 0);
 		assert(submitArgsToTestFunction(kcutilmgr, "comp -gz -d " + check_in_file, "", check_out_file) == 0);
-		assert(submitArgsToTestFunction(kcutilmgr, "comp -lzo CMakeLists.txt", "", check_in_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "comp -lzo " + test_file, "", check_in_file) == 0);
 		assert(submitArgsToTestFunction(kcutilmgr, "comp -lzo -d " + check_in_file, "", check_out_file) == 0);
-		assert(submitArgsToTestFunction(kcutilmgr, "comp -lzma CMakeLists.txt", "", check_in_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "comp -lzma " + test_file, "", check_in_file) == 0);
 		assert(submitArgsToTestFunction(kcutilmgr, "comp -lzma -d " + check_in_file, "", check_out_file) == 0);
-		assert(submitArgsToTestFunction(kcutilmgr, "hash CMakeLists.txt", "", check_in_file) == 0);
-		assert(submitArgsToTestFunction(kcutilmgr, "hash -fnv CMakeLists.txt", "", check_out_file) == 0);
-		assert(submitArgsToTestFunction(kcutilmgr, "hash -path CMakeLists.txt", "", check_out_file) == 0);
-		assert(submitArgsToTestFunction(kcutilmgr, "regex mikio CMakeLists.txt", "", check_out_file) == 0);
-		assert(submitArgsToTestFunction(kcutilmgr, "regex -alt hirarin mikio CMakeLists.txt", "", check_out_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "hash " + test_file, "", check_in_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "hash -fnv " + test_file, "", check_out_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "hash -path " + test_file, "", check_out_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "regex mikio " + test_file, "", check_out_file) == 0);
+		assert(submitArgsToTestFunction(kcutilmgr, "regex -alt hirarin mikio " + test_file, "", check_out_file) == 0);
 		assert(submitArgsToTestFunction(kcutilmgr, "conf") == 0);
 
 		removeCasket();
