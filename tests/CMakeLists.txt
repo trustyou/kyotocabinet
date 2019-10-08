@@ -3,6 +3,11 @@ target_link_libraries(kcutiltest kyotocabinet)
 ADD_TEST(NAME kcutiltest COMMAND kcutiltest WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 add_dependencies(check kcutiltest)
 
+ADD_EXECUTABLE(kcprototest kcprototest.cc testutil.cc)
+target_link_libraries(kcprototest kyotocabinet)
+ADD_TEST(NAME kcprototest COMMAND kcprototest WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+add_dependencies(check kcprototest)
+
 ADD_EXECUTABLE(kchashtest kchashtest.cc testutil.cc ../src/kchashmgr_impl.cc)
 target_link_libraries(kchashtest kyotocabinet)
 ADD_TEST(NAME kchashtest COMMAND kchashtest WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})

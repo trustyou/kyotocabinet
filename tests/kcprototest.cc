@@ -15,6 +15,7 @@
 
 #include <kcprotodb.h>
 #include "cmdcommon.h"
+#include "testutil.h"
 
 
 // global variables
@@ -51,7 +52,28 @@ int main(int argc, char** argv) {
 		return kcprototest(argc, argv);
 	}
 	else {
-		// TODO
+		removeCasket();
+
+		assert(submitArgsToTestFunction(kcprototest, "order -etc 10000") == 0);
+		assert(submitArgsToTestFunction(kcprototest, "order -th 4 10000") == 0);
+		assert(submitArgsToTestFunction(kcprototest, "order -th 4 -rnd -etc 10000") == 0);
+		assert(submitArgsToTestFunction(kcprototest, "order -th 4 -rnd -etc -tran 10000") == 0);
+		assert(submitArgsToTestFunction(kcprototest, "wicked 10000") == 0);
+		assert(submitArgsToTestFunction(kcprototest, "wicked -th 4 -it 4 10000") == 0);
+		assert(submitArgsToTestFunction(kcprototest, "tran 10000") == 0);
+		assert(submitArgsToTestFunction(kcprototest, "tran -th 2 -it 4 10000") == 0);
+
+		removeCasket();
+
+		assert(submitArgsToTestFunction(kcprototest, "order -tree -etc 10000") == 0);
+		assert(submitArgsToTestFunction(kcprototest, "order -tree -th 4 10000") == 0);
+		assert(submitArgsToTestFunction(kcprototest, "order -tree -th 4 -rnd -etc 10000") == 0);
+		assert(submitArgsToTestFunction(kcprototest, "order -tree -th 4 -rnd -etc -tran 10000") == 0);
+		assert(submitArgsToTestFunction(kcprototest, "wicked -tree 10000") == 0);
+		assert(submitArgsToTestFunction(kcprototest, "wicked -tree -th 4 -it 4 10000") == 0);
+		assert(submitArgsToTestFunction(kcprototest, "tran -tree 10000") == 0);
+		assert(submitArgsToTestFunction(kcprototest, "tran -tree -th 2 -it 4 10000") == 0);
+
 		return 0;
 	}
 }
