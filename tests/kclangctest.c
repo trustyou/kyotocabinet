@@ -33,7 +33,7 @@ typedef struct {                         /* arguments of visitor */
 
 
 /* global variables */
-const char* g_progname;                  /* program name */
+const char* gt_progname;                  /* program name */
 
 
 /* function prototypes */
@@ -76,7 +76,7 @@ int main(int argc, char** argv) {
 /* main test routine */
 int kclangctest(int argc, char** argv) {
   int32_t i, rv;
-  g_progname = argv[0];
+  gt_progname = argv[0];
   srand(time(NULL));
   if (argc < 2) usage();
   rv = 0;
@@ -104,14 +104,14 @@ int kclangctest(int argc, char** argv) {
 
 /* print the usage and exit */
 static void usage() {
-  eprintf("%s: test cases of the C binding of Kyoto Cabinet\n", g_progname);
+  eprintf("%s: test cases of the C binding of Kyoto Cabinet\n", gt_progname);
   eprintf("\n");
   eprintf("usage:\n");
   eprintf("  %s order [-rnd] [-etc] [-tran] [-oat|-oas|-onl|-otl|-onr] path rnum\n",
-          g_progname);
-  eprintf("  %s index [-rnd] [-etc] [-oat|-oas|-onl|-otl|-onr] path rnum\n", g_progname);
-  eprintf("  %s map [-rnd] [-etc] [-bnum num] rnum\n", g_progname);
-  eprintf("  %s list [-rnd] [-etc] rnum\n", g_progname);
+          gt_progname);
+  eprintf("  %s index [-rnd] [-etc] [-oat|-oas|-onl|-otl|-onr] path rnum\n", gt_progname);
+  eprintf("  %s map [-rnd] [-etc] [-bnum num] rnum\n", gt_progname);
+  eprintf("  %s list [-rnd] [-etc] rnum\n", gt_progname);
   eprintf("\n");
   exit(1);
 }
@@ -164,7 +164,7 @@ static void dberrprint(KCDB* db, int32_t line, const char* func) {
   ecode = kcdbecode(db);
   emsg = kcdbemsg(db);
   oprintf("%s: %d: %s: %s: %d: %s: %s\n",
-          g_progname, line, func, path ? path : "-", ecode, kcecodename(ecode), emsg);
+          gt_progname, line, func, path ? path : "-", ecode, kcecodename(ecode), emsg);
   kcfree(path);
 }
 
@@ -971,11 +971,11 @@ static int32_t procmap(int64_t rnum, int32_t rnd, int32_t etc, int64_t bnum) {
     vbuf = kcmapget(map, kbuf, ksiz, &vsiz);
     if (vbuf) {
       if (vsiz < ksiz || memcmp(vbuf, kbuf, ksiz)) {
-        eprintf("%s: kcmapget failed\n", g_progname);
+        eprintf("%s: kcmapget failed\n", gt_progname);
         err = TRUE;
       }
     } else if (!rnd) {
-      eprintf("%s: kcmapget failed\n", g_progname);
+      eprintf("%s: kcmapget failed\n", gt_progname);
       err = TRUE;
     }
     if (rnum > 250 && i % (rnum / 250) == 0) {
@@ -1006,11 +1006,11 @@ static int32_t procmap(int64_t rnum, int32_t rnd, int32_t etc, int64_t bnum) {
         }
       }
       if (!kcmapitergetkey(iter, &ksiz)) {
-        eprintf("%s: kcmapitergetkey failed\n", g_progname);
+        eprintf("%s: kcmapitergetkey failed\n", gt_progname);
         err = TRUE;
       }
       if (!kcmapitergetvalue(iter, &vsiz)) {
-        eprintf("%s: kcmapitergetvalue failed\n", g_progname);
+        eprintf("%s: kcmapitergetvalue failed\n", gt_progname);
         err = TRUE;
       }
       cnt++;
@@ -1023,7 +1023,7 @@ static int32_t procmap(int64_t rnum, int32_t rnd, int32_t etc, int64_t bnum) {
     if (rnd) oprintf(" (end)\n");
     kcmapiterdel(iter);
     if (!rnd && cnt != (int64_t)kcmapcount(map)) {
-      eprintf("%s: kcmapcount failed\n", g_progname);
+      eprintf("%s: kcmapcount failed\n", gt_progname);
       err = TRUE;
     }
     etime = kctime();
@@ -1037,11 +1037,11 @@ static int32_t procmap(int64_t rnum, int32_t rnd, int32_t etc, int64_t bnum) {
     sort = kcmapsorter(map);
     while (!err && (ikbuf = kcmapsortget(sort, &ksiz, &vbuf, &vsiz)) != NULL) {
       if (!kcmapsortgetkey(sort, &ksiz)) {
-        eprintf("%s: kcmapsortgetkey failed\n", g_progname);
+        eprintf("%s: kcmapsortgetkey failed\n", gt_progname);
         err = TRUE;
       }
       if (!kcmapsortgetvalue(sort, &vsiz)) {
-        eprintf("%s: kcmapsortgetvalue failed\n", g_progname);
+        eprintf("%s: kcmapsortgetvalue failed\n", gt_progname);
         err = TRUE;
       }
       cnt++;
@@ -1054,7 +1054,7 @@ static int32_t procmap(int64_t rnum, int32_t rnd, int32_t etc, int64_t bnum) {
     if (rnd) oprintf(" (end)\n");
     kcmapsortdel(sort);
     if (!rnd && cnt != (int64_t)kcmapcount(map)) {
-      eprintf("%s: kcmapcount failed\n", g_progname);
+      eprintf("%s: kcmapcount failed\n", gt_progname);
       err = TRUE;
     }
     etime = kctime();
@@ -1066,7 +1066,7 @@ static int32_t procmap(int64_t rnum, int32_t rnd, int32_t etc, int64_t bnum) {
   for (i = 1; !err && i <= rnum; i++) {
     ksiz = sprintf(kbuf, "%08ld", (long)(rnd ? myrand(rnum) + 1 : i));
     if (!kcmapremove(map, kbuf, ksiz) && !rnd) {
-      eprintf("%s: kcmapremove failed\n", g_progname);
+      eprintf("%s: kcmapremove failed\n", gt_progname);
       err = TRUE;
     }
     if (rnum > 250 && i % (rnum / 250) == 0) {

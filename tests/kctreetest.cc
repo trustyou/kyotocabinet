@@ -15,10 +15,12 @@
 
 #include <kchashdb.h>
 #include "cmdcommon.h"
+#include "kctreemgr.h"
+#include "testutil.h"
 
 
 // global variables
-const char* g_progname;                  // program name
+const char* gt_progname;                  // program name
 uint32_t g_randseed;                     // random seed
 int64_t g_memusage;                      // memory usage
 
@@ -57,14 +59,99 @@ int main(int argc, char** argv) {
 		return kctreetest(argc, argv);
 	}
 	else {
-		// TODO
+		removeCasket();
+
+		assert(submitArgsToTestFunction(kctreemgr, "create -otr -apow 1 -fpow 2 -bnum 3 casket") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "inform -st casket") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "set -add casket duffy 1231") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "set -add casket micky 0101") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "set casket fal 1007") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "set casket mikio 0211") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "set casket natsuki 0810") == 0);
+
+		// Spaces at the end are intentional (empty parameter)
+		assert(submitArgsToTestFunction(kctreemgr, "set casket micky  ") == 0);
+
+		assert(submitArgsToTestFunction(kctreemgr, "set -app casket duffy kukuku") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "remove casket micky") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "list -pv casket", "", check_out_file) == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "set casket ryu 1") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "set casket ken 2") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "remove casket duffy") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "set casket ryu syo-ryu-ken") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "set casket ken tatsumaki-senpu-kyaku") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "set -inci casket int 1234") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "set -inci casket int 5678") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "set -incd casket double 1234.5678") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "set -incd casket double 8765.4321") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "get casket mikio") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "get casket ryu") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "import casket resources/numbers.tsv") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "list -des -pv -px casket", "", check_out_file) == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "copy casket casket-para") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "dump casket check.out") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "load -otr casket check.out") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "defrag -onl casket") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "setbulk casket aa aaa bb bbb cc ccc dd ddd") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "removebulk casket aa bb zz") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "getbulk casket aa bb cc dd") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "check -onr casket") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "inform -st casket") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "create -otr -otl -onr -apow 1 -fpow 3 -ts -tl -tc -bnum 1 casket") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "import casket", "resources/numbers.tsv") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "set casket mikio kyotocabinet") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "set -app casket tako ikaunini") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "set -app casket mikio kyototyrant") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "set -app casket mikio kyotodystopia") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "get -px casket mikio", "", check_out_file) == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "list casket", "", check_out_file) == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "check -onr casket") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "clear casket") == 0);
+
+		removeCasket();
+
+		assert(submitArgsToTestFunction(kctreetest, "order -set -psiz 100 -bnum 5000 -msiz 50000 -pccap 100k casket 10000") == 0);
+		assert(submitArgsToTestFunction(kctreetest, "order -get -msiz 50000 -pccap 100k casket 10000") == 0);
+		assert(submitArgsToTestFunction(kctreetest, "order -getw -msiz 5000 -pccap 100k casket 10000") == 0);
+		assert(submitArgsToTestFunction(kctreetest, "order -rem -msiz 50000 -pccap 100k casket 10000") == 0);
+		assert(submitArgsToTestFunction(kctreetest, "order -bnum 5000 -psiz 100 -msiz 50000 -pccap 100k casket 10000") == 0);
+		assert(submitArgsToTestFunction(kctreetest, "order -etc -bnum 5000 -psiz 1000 -msiz 50000 -dfunit 4 -pccap 100k casket 10000") == 0);
+		assert(submitArgsToTestFunction(kctreetest, "order -th 4 -bnum 5000 -psiz 1000 -msiz 50000 -dfunit 4 -pccap 100k casket 10000") == 0);
+		assert(submitArgsToTestFunction(kctreetest, "order -th 4 -pccap 100k -rnd -etc -bnum 5000 -psiz 1000 -msiz 50000 -dfunit 4 -pccap 100k -rcd casket 10000") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "check -onr casket") == 0);
+		assert(submitArgsToTestFunction(kctreetest, "order -th 4 -rnd -etc -tran -bnum 5000 -psiz 1000 -msiz 50000 -dfunit 4 -pccap 100k casket 1000") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "check -onr casket") == 0);
+		assert(submitArgsToTestFunction(kctreetest, "order -th 4 -rnd -etc -oat -bnum 5000 -psiz 1000 -msiz 50000 -dfunit 4 -pccap 100k casket 1000") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "check -onr casket") == 0);
+		assert(submitArgsToTestFunction(kctreetest, "order -th 4 -rnd -etc -apow 2 -fpow 3 -ts -tl -tc -bnum 5000 -psiz 1000 -msiz 50000 -dfunit 4 casket 10000") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "check -onr casket") == 0);
+		assert(submitArgsToTestFunction(kctreetest, "queue -bnum 5000 -psiz 500 -msiz 50000 casket 10000") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "check -onr casket") == 0);
+		assert(submitArgsToTestFunction(kctreetest, "queue -rnd -bnum 5000 -psiz 500 -msiz 50000 casket 10000") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "check -onr casket") == 0);
+		assert(submitArgsToTestFunction(kctreetest, "queue -th 4 -it 4 -bnum 5000 -psiz 500 -msiz 50000 casket 10000") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "check -onr casket") == 0);
+		assert(submitArgsToTestFunction(kctreetest, "queue -th 4 -it 4 -rnd -bnum 5000 -psiz 500 -msiz 50000 casket 10000") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "check -onr casket") == 0);
+		assert(submitArgsToTestFunction(kctreetest, "wicked -bnum 5000 -psiz 1000 -msiz 50000 -pccap 100k casket 10000") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "check -onr casket") == 0);
+		assert(submitArgsToTestFunction(kctreetest, "wicked -th 4 -it 4 -bnum 5000 -msiz 50000 -dfunit 4 -pccap 100k -rcd casket 10000") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "check -onr casket") == 0);
+		assert(submitArgsToTestFunction(kctreetest, "wicked -th 4 -it 4 -oat -bnum 5000 -msiz 50000 -dfunit 4 -pccap 100k casket 1000") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "check -onr casket") == 0);
+		assert(submitArgsToTestFunction(kctreetest, "wicked -th 4 -it 4 -apow 2 -fpow 3 -ts -tl -tc -bnum 10000 -msiz 50000 -dfunit 4 casket 1000") == 0);
+		assert(submitArgsToTestFunction(kctreemgr, "check -onr casket") == 0);
+		assert(submitArgsToTestFunction(kctreetest, "tran casket 10000") == 0);
+		assert(submitArgsToTestFunction(kctreetest, "tran -th 2 -it 4 -pccap 100k casket 10000") == 0);
+		assert(submitArgsToTestFunction(kctreetest, "tran -th 2 -it 4 -apow 2 -fpow 3 -ts -tl -tc -bnum 10000 -msiz 50000 -dfunit 4 -rcd casket 10000") == 0);
+
 		return 0;
 	}
 }
 
 // main test routine
 int kctreetest(int argc, char** argv) {
-  g_progname = argv[0];
+  gt_progname = argv[0];
   const char* ebuf = kc::getenv("KCRNDSEED");
   g_randseed = ebuf ? (uint32_t)kc::atoi(ebuf) : (uint32_t)(kc::time() * 1000);
   mysrand(g_randseed);
@@ -96,22 +183,22 @@ int kctreetest(int argc, char** argv) {
 
 // print the usage and exit
 static void usage() {
-  eprintf("%s: test cases of the file tree database of Kyoto Cabinet\n", g_progname);
+  eprintf("%s: test cases of the file tree database of Kyoto Cabinet\n", gt_progname);
   eprintf("\n");
   eprintf("usage:\n");
   eprintf("  %s order [-th num] [-rnd] [-set|-get|-getw|-rem|-etc] [-tran]"
           " [-oat|-oas|-onl|-otl|-onr] [-apow num] [-fpow num] [-ts] [-tl] [-tc] [-bnum num]"
           " [-psiz num] [-msiz num] [-dfunit num] [-pccap num] [-rcd|-rcld|-rcdd] [-lv]"
-          " path rnum\n", g_progname);
+          " path rnum\n", gt_progname);
   eprintf("  %s queue [-th num] [-it num] [-rnd] [-oat|-oas|-onl|-otl|-onr]"
           " [-apow num] [-fpow num] [-ts] [-tl] [-tc] [-bnum num] [-psiz num] [-msiz num]"
-          " [-dfunit num] [-pccap num] [-rcd|-rcld|-rcdd] [-lv] path rnum\n", g_progname);
+          " [-dfunit num] [-pccap num] [-rcd|-rcld|-rcdd] [-lv] path rnum\n", gt_progname);
   eprintf("  %s wicked [-th num] [-it num] [-oat|-oas|-onl|-otl|-onr]"
           " [-apow num] [-fpow num] [-ts] [-tl] [-tc] [-bnum num] [-psiz num] [-msiz num]"
-          " [-dfunit num] [-pccap num] [-rcd|-rcld|-rcdd] [-lv] path rnum\n", g_progname);
+          " [-dfunit num] [-pccap num] [-rcd|-rcld|-rcdd] [-lv] path rnum\n", gt_progname);
   eprintf("  %s tran [-th num] [-it num] [-hard] [-oat|-oas|-onl|-otl|-onr]"
           " [-apow num] [-fpow num] [-ts] [-tl] [-tc] [-bnum num] [-psiz num] [-msiz num]"
-          " [-dfunit num] [-pccap num] [-rcd|-rcld|-rcdd] [-lv] path rnum\n", g_progname);
+          " [-dfunit num] [-pccap num] [-rcd|-rcld|-rcdd] [-lv] path rnum\n", gt_progname);
   eprintf("\n");
   std::exit(1);
 }
@@ -121,7 +208,7 @@ static void usage() {
 static void dberrprint(kc::BasicDB* db, int32_t line, const char* func) {
   const kc::BasicDB::Error& err = db->error();
   oprintf("%s: %d: %s: %s: %d: %s: %s\n",
-          g_progname, line, func, db->path().c_str(), err.code(), err.name(), err.message());
+          gt_progname, line, func, db->path().c_str(), err.code(), err.name(), err.message());
 }
 
 
@@ -640,7 +727,7 @@ static int32_t procorder(const char* path, int64_t rnum, int32_t thnum, bool rnd
   kc::TreeDB db;
   oprintf("opening the database:\n");
   double stime = kc::time();
-  db.tune_logger(stdlogger(g_progname, &std::cout),
+  db.tune_logger(stdlogger(gt_progname, &std::cout),
                  lv ? kc::UINT32MAX : kc::BasicDB::Logger::WARN | kc::BasicDB::Logger::ERROR);
   if (apow >= 0) db.tune_alignment(apow);
   if (fpow >= 0) db.tune_fbp(fpow);
@@ -1676,7 +1763,7 @@ static int32_t procqueue(const char* path, int64_t rnum, int32_t thnum, int32_t 
           rcomp, lv);
   bool err = false;
   kc::TreeDB db;
-  db.tune_logger(stdlogger(g_progname, &std::cout),
+  db.tune_logger(stdlogger(gt_progname, &std::cout),
                  lv ? kc::UINT32MAX : kc::BasicDB::Logger::WARN | kc::BasicDB::Logger::ERROR);
   if (apow >= 0) db.tune_alignment(apow);
   if (fpow >= 0) db.tune_fbp(fpow);
@@ -1883,7 +1970,7 @@ static int32_t procwicked(const char* path, int64_t rnum, int32_t thnum, int32_t
           rcomp, lv);
   bool err = false;
   kc::TreeDB db;
-  db.tune_logger(stdlogger(g_progname, &std::cout),
+  db.tune_logger(stdlogger(gt_progname, &std::cout),
                  lv ? kc::UINT32MAX : kc::BasicDB::Logger::WARN | kc::BasicDB::Logger::ERROR);
   if (apow >= 0) db.tune_alignment(apow);
   if (fpow >= 0) db.tune_fbp(fpow);
@@ -2253,9 +2340,9 @@ static int32_t proctran(const char* path, int64_t rnum, int32_t thnum, int32_t i
   bool err = false;
   kc::TreeDB db;
   kc::TreeDB paradb;
-  db.tune_logger(stdlogger(g_progname, &std::cout),
+  db.tune_logger(stdlogger(gt_progname, &std::cout),
                  lv ? kc::UINT32MAX : kc::BasicDB::Logger::WARN | kc::BasicDB::Logger::ERROR);
-  paradb.tune_logger(stdlogger(g_progname, &std::cout), lv ? kc::UINT32MAX :
+  paradb.tune_logger(stdlogger(gt_progname, &std::cout), lv ? kc::UINT32MAX :
                      kc::BasicDB::Logger::WARN | kc::BasicDB::Logger::ERROR);
   if (apow >= 0) db.tune_alignment(apow);
   if (fpow >= 0) db.tune_fbp(fpow);
