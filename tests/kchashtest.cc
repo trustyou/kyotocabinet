@@ -85,8 +85,8 @@ int main(int argc, char** argv) {
 		assert(submitArgsToTestFunction(kchashmgr, "import casket resources/numbers.tsv") == 0);
 		assert(submitArgsToTestFunction(kchashmgr, "list -pv -px casket", "", check_out_file) == 0);
 		assert(submitArgsToTestFunction(kchashmgr, "copy casket casket-para") == 0);
-		assert(submitArgsToTestFunction(kchashmgr, "dump casket check.out") == 0);
-		assert(submitArgsToTestFunction(kchashmgr, "load -otr casket check.out") == 0);
+		assert(submitArgsToTestFunction(kchashmgr, "dump casket " + check_out_file) == 0);
+		assert(submitArgsToTestFunction(kchashmgr, "load -otr casket " + check_out_file) == 0);
 		assert(submitArgsToTestFunction(kchashmgr, "defrag -onl casket") == 0);
 		assert(submitArgsToTestFunction(kchashmgr, "setbulk casket aa aaa bb bbb cc ccc dd ddd") == 0);
 		assert(submitArgsToTestFunction(kchashmgr, "removebulk casket aa bb zz") == 0);
