@@ -1,3 +1,7 @@
+# Enable git hook for source code formatting
+
+execute_process(COMMAND git config core.hooksPath .git_hooks)
+
 # General declarations
 
 include(GNUInstallDirs)
