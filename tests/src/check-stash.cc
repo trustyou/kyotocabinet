@@ -1,5 +1,5 @@
 /*************************************************************************************************
- * The test cases of the C language binding
+ * The test cases of the stash database
  *                                                               Copyright (C) 2009-2012 FAL Labs
  *                                                               Copyright (C) 2013-2017 Cloudflare Inc.
  *                                                               Copyright (C) 2018-2019 TrustYou GmbH
@@ -14,17 +14,25 @@
  * If not, see <http://www.gnu.org/licenses/>.
  *************************************************************************************************/
 
-#ifndef _KCLANGCTEST_H                        // duplication check
-#define _KCLANGCTEST_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include <cassert>
 
-int kclangctest ( int argc, char **argv );
+#include "testutil.h"
+#include "kcstashtest.h"
 
-#ifdef __cplusplus
+// main routine
+int main(int argc, char** argv) {
+        removeCasket();
+
+        assert ( submitArgsToTestFunction ( kcstashtest, "order -etc -bnum 5000 10000" ) == 0 );
+        assert ( submitArgsToTestFunction ( kcstashtest, "order -th 4 -bnum 5000 10000" ) == 0 );
+        assert ( submitArgsToTestFunction ( kcstashtest, "order -th 4 -rnd -etc -bnum 5000 10000" ) == 0 );
+        assert ( submitArgsToTestFunction ( kcstashtest, "order -th 4 -rnd -etc -bnum 5000 10000" ) == 0 );
+        assert ( submitArgsToTestFunction ( kcstashtest, "order -th 4 -rnd -etc -tran -bnum 5000 10000" ) == 0 );
+        assert ( submitArgsToTestFunction ( kcstashtest, "wicked -bnum 5000 10000" ) == 0 );
+        assert ( submitArgsToTestFunction ( kcstashtest, "wicked -th 4 -it 4 -bnum 5000 10000" ) == 0 );
+        assert ( submitArgsToTestFunction ( kcstashtest, "tran -bnum 5000 10000" ) == 0 );
+        assert ( submitArgsToTestFunction ( kcstashtest, "tran -th 2 -it 4 -bnum 5000 10000" ) == 0 );
+
+        return 0;
 }
-#endif
-
-#endif

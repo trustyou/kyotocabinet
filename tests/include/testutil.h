@@ -1,5 +1,5 @@
 /*************************************************************************************************
- * The test cases of the C language binding
+ * Test utilites
  *                                                               Copyright (C) 2009-2012 FAL Labs
  *                                                               Copyright (C) 2013-2017 Cloudflare Inc.
  *                                                               Copyright (C) 2018-2019 TrustYou GmbH
@@ -14,17 +14,28 @@
  * If not, see <http://www.gnu.org/licenses/>.
  *************************************************************************************************/
 
-#ifndef _KCLANGCTEST_H                        // duplication check
-#define _KCLANGCTEST_H
+#ifndef _TESTUTIL_H                        // duplication check
+#define _TESTUTIL_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include <string>
 
-int kclangctest ( int argc, char **argv );
+static const std::string check_in_file = "check.in";
+static const std::string check_out_file = "check.out";
 
-#ifdef __cplusplus
-}
-#endif
+/**
+ * Remove all files in the current working directory, whose names begin with "casket"
+ */
+void removeCasket();
+
+/**
+ * Call a test function, which accepts the (argc, argv) arguments with
+ * command line parameters provided in a single string
+ * @param testFunc the test function
+ * @param params the command line parameters
+ * @param inputFileName the name of the file which will substitute stdin (use stdin if "")
+ * @param outputFileName the name of the file which will substitute stdout (use stdout if "")
+ * @return the exit code of the test function
+ */
+int submitArgsToTestFunction ( int ( *testFunc ) ( int, char ** ), std::string params, std::string inputFileName = "", std::string outputFileName = "" );
 
 #endif
