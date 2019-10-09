@@ -21,7 +21,7 @@
 
 
 // global variables
-const char* g_progname;                  // program name
+const char* gt_progname;                  // program name
 uint32_t g_randseed;                     // random seed
 int64_t g_memusage;                      // memory usage
 
@@ -48,7 +48,7 @@ static int32_t proctran(const char* tname, int64_t rnum, int32_t thnum, int32_t 
 
 // main routine
 int kcprototest(int argc, char** argv) {
-    g_progname = argv[0];
+    gt_progname = argv[0];
     const char* ebuf = kc::getenv("KCRNDSEED");
     g_randseed = ebuf ? (uint32_t)kc::atoi(ebuf) : (uint32_t)(kc::time() * 1000);
     mysrand(g_randseed);
@@ -80,13 +80,13 @@ int kcprototest(int argc, char** argv) {
 
 // print the usage and exit
 static void usage() {
-    eprintf("%s: test cases of the prototype database of Kyoto Cabinet\n", g_progname);
+    eprintf("%s: test cases of the prototype database of Kyoto Cabinet\n", gt_progname);
     eprintf("\n");
     eprintf("usage:\n");
-    eprintf("  %s order [-tree] [-th num] [-rnd] [-etc] [-tran] rnum\n", g_progname);
-    eprintf("  %s queue [-tree] [-th num] [-it num] [-rnd] rnum\n", g_progname);
-    eprintf("  %s wicked [-tree] [-th num] [-it num] rnum\n", g_progname);
-    eprintf("  %s tran [-tree] [-th num] [-it num] rnum\n", g_progname);
+    eprintf("  %s order [-tree] [-th num] [-rnd] [-etc] [-tran] rnum\n", gt_progname);
+    eprintf("  %s queue [-tree] [-th num] [-it num] [-rnd] rnum\n", gt_progname);
+    eprintf("  %s wicked [-tree] [-th num] [-it num] rnum\n", gt_progname);
+    eprintf("  %s tran [-tree] [-th num] [-it num] rnum\n", gt_progname);
     eprintf("\n");
     std::exit(1);
 }
@@ -96,7 +96,7 @@ static void usage() {
 static void dberrprint(kc::BasicDB* db, int32_t line, const char* func) {
     const kc::BasicDB::Error& err = db->error();
     oprintf("%s: %d: %s: %s: %d: %s: %s\n",
-            g_progname, line, func, db->path().c_str(), err.code(), err.name(), err.message());
+            gt_progname, line, func, db->path().c_str(), err.code(), err.name(), err.message());
 }
 
 

@@ -22,7 +22,7 @@
 
 
 // global variables
-const char* g_progname;                  // program name
+const char* gt_progname;                  // program name
 uint32_t g_randseed;                     // random seed
 int64_t g_memusage;                      // memory usage
 
@@ -58,7 +58,7 @@ static int32_t procmisc(const char* path);
 
 // main routine
 int kcpolytest(int argc, char** argv) {
-    g_progname = argv[0];
+    gt_progname = argv[0];
     const char* ebuf = kc::getenv("KCRNDSEED");
     g_randseed = ebuf ? (uint32_t)kc::atoi(ebuf) : (uint32_t)(kc::time() * 1000);
     mysrand(g_randseed);
@@ -96,23 +96,23 @@ int kcpolytest(int argc, char** argv) {
 
 // print the usage and exit
 static void usage() {
-    eprintf("%s: test cases of the polymorphic database of Kyoto Cabinet\n", g_progname);
+    eprintf("%s: test cases of the polymorphic database of Kyoto Cabinet\n", gt_progname);
     eprintf("\n");
     eprintf("usage:\n");
     eprintf("  %s order [-th num] [-rnd] [-set|-get|-getw|-rem|-etc] [-tran]"
-            " [-oat|-oas|-onl|-otl|-onr] [-lv] path rnum\n", g_progname);
+            " [-oat|-oas|-onl|-otl|-onr] [-lv] path rnum\n", gt_progname);
     eprintf("  %s queue [-th num] [-it num] [-rnd] [-oat|-oas|-onl|-otl|-onr] [-lv]"
-            " path rnum\n", g_progname);
+            " path rnum\n", gt_progname);
     eprintf("  %s wicked [-th num] [-it num] [-oat|-oas|-onl|-otl|-onr] [-lv]"
-            " path rnum\n", g_progname);
+            " path rnum\n", gt_progname);
     eprintf("  %s tran [-th num] [-it num] [-hard] [-oat|-oas|-onl|-otl|-onr] [-lv]"
-            " path rnum\n", g_progname);
+            " path rnum\n", gt_progname);
     eprintf("  %s mapred [-rnd] [-ru] [-oat|-oas|-onl|-otl|-onr] [-lv] [-tmp str]"
             " [-dbnum num] [-clim num] [-cbnum num] [-xnl] [-xpm] [-xpr] [-xpf] [-xnc]"
-            " path rnum\n", g_progname);
+            " path rnum\n", gt_progname);
     eprintf("  %s index [-th num] [-rnd] [-set|-get|-rem|-etc]"
-            " [-oat|-oas|-onl|-otl|-onr] [-lv] path rnum\n", g_progname);
-    eprintf("  %s misc path\n", g_progname);
+            " [-oat|-oas|-onl|-otl|-onr] [-lv] path rnum\n", gt_progname);
+    eprintf("  %s misc path\n", gt_progname);
     eprintf("\n");
     std::exit(1);
 }
@@ -122,7 +122,7 @@ static void usage() {
 static void dberrprint(kc::BasicDB* db, int32_t line, const char* func) {
     const kc::BasicDB::Error& err = db->error();
     oprintf("%s: %d: %s: %s: %d: %s: %s\n",
-            g_progname, line, func, db->path().c_str(), err.code(), err.name(), err.message());
+            gt_progname, line, func, db->path().c_str(), err.code(), err.name(), err.message());
 }
 
 
@@ -568,7 +568,7 @@ static int32_t procorder(const char* path, int64_t rnum, int32_t thnum, bool rnd
     kc::PolyDB db;
     oprintf("opening the database:\n");
     double stime = kc::time();
-    db.tune_logger(stdlogger(g_progname, &std::cout),
+    db.tune_logger(stdlogger(gt_progname, &std::cout),
                    lv ? kc::UINT32MAX : kc::BasicDB::Logger::WARN | kc::BasicDB::Logger::ERROR);
     uint32_t omode = kc::PolyDB::OWRITER | kc::PolyDB::OCREATE | kc::PolyDB::OTRUNCATE;
     if (mode == 'r') {
@@ -1574,7 +1574,7 @@ static int32_t procqueue(const char* path, int64_t rnum, int32_t thnum, int32_t 
             g_randseed, path, (long long)rnum, thnum, itnum, rnd, oflags, lv);
     bool err = false;
     kc::PolyDB db;
-    db.tune_logger(stdlogger(g_progname, &std::cout),
+    db.tune_logger(stdlogger(gt_progname, &std::cout),
                    lv ? kc::UINT32MAX : kc::BasicDB::Logger::WARN | kc::BasicDB::Logger::ERROR);
     for (int32_t itcnt = 1; itcnt <= itnum; itcnt++) {
         if (itnum > 1) oprintf("iteration %d:\n", itcnt);
@@ -1742,7 +1742,7 @@ static int32_t procwicked(const char* path, int64_t rnum, int32_t thnum, int32_t
             g_randseed, path, (long long)rnum, thnum, itnum, oflags, lv);
     bool err = false;
     kc::PolyDB db;
-    db.tune_logger(stdlogger(g_progname, &std::cout),
+    db.tune_logger(stdlogger(gt_progname, &std::cout),
                    lv ? kc::UINT32MAX : kc::BasicDB::Logger::WARN | kc::BasicDB::Logger::ERROR);
     for (int32_t itcnt = 1; itcnt <= itnum; itcnt++) {
         if (itnum > 1) oprintf("iteration %d:\n", itcnt);
@@ -2114,9 +2114,9 @@ static int32_t proctran(const char* path, int64_t rnum, int32_t thnum, int32_t i
     bool err = false;
     kc::PolyDB db;
     kc::PolyDB paradb;
-    db.tune_logger(stdlogger(g_progname, &std::cout),
+    db.tune_logger(stdlogger(gt_progname, &std::cout),
                    lv ? kc::UINT32MAX : kc::BasicDB::Logger::WARN | kc::BasicDB::Logger::ERROR);
-    paradb.tune_logger(stdlogger(g_progname, &std::cout), lv ? kc::UINT32MAX :
+    paradb.tune_logger(stdlogger(gt_progname, &std::cout), lv ? kc::UINT32MAX :
                        kc::BasicDB::Logger::WARN | kc::BasicDB::Logger::ERROR);
     for (int32_t itcnt = 1; itcnt <= itnum; itcnt++) {
         oprintf("iteration %d updating:\n", itcnt);
@@ -2338,7 +2338,7 @@ static int32_t procmapred(const char* path, int64_t rnum, bool rnd, bool ru, int
             tmpdir, (long long)dbnum, (long long)clim, (long long)cbnum, opts);
     bool err = false;
     kc::PolyDB db;
-    db.tune_logger(stdlogger(g_progname, &std::cout),
+    db.tune_logger(stdlogger(gt_progname, &std::cout),
                    lv ? kc::UINT32MAX : kc::BasicDB::Logger::WARN | kc::BasicDB::Logger::ERROR);
     double stime = kc::time();
     uint32_t omode = kc::PolyDB::OWRITER | kc::PolyDB::OCREATE | kc::PolyDB::OTRUNCATE;
@@ -2446,7 +2446,7 @@ static int32_t procindex(const char* path, int64_t rnum, int32_t thnum, bool rnd
     kc::IndexDB db;
     oprintf("opening the database:\n");
     double stime = kc::time();
-    db.tune_logger(stdlogger(g_progname, &std::cout),
+    db.tune_logger(stdlogger(gt_progname, &std::cout),
                    lv ? kc::UINT32MAX : kc::BasicDB::Logger::WARN | kc::BasicDB::Logger::ERROR);
     uint32_t omode = kc::PolyDB::OWRITER | kc::PolyDB::OCREATE | kc::PolyDB::OTRUNCATE;
     if (mode == 'r') {

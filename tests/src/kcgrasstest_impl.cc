@@ -21,7 +21,7 @@
 
 
 // global variables
-const char* g_progname;                  // program name
+const char* gt_progname;                  // program name
 uint32_t g_randseed;                     // random seed
 int64_t g_memusage;                      // memory usage
 
@@ -50,7 +50,7 @@ static int32_t proctran(int64_t rnum, int32_t thnum, int32_t itnum,
 
 // main routine
 int kcgrasstest(int argc, char** argv) {
-    g_progname = argv[0];
+    gt_progname = argv[0];
     const char* ebuf = kc::getenv("KCRNDSEED");
     g_randseed = ebuf ? (uint32_t)kc::atoi(ebuf) : (uint32_t)(kc::time() * 1000);
     mysrand(g_randseed);
@@ -82,17 +82,17 @@ int kcgrasstest(int argc, char** argv) {
 
 // print the usage and exit
 static void usage() {
-    eprintf("%s: test cases of the cache tree database of Kyoto Cabinet\n", g_progname);
+    eprintf("%s: test cases of the cache tree database of Kyoto Cabinet\n", gt_progname);
     eprintf("\n");
     eprintf("usage:\n");
     eprintf("  %s order [-th num] [-rnd] [-etc] [-tran] [-tc] [-bnum num] [-psiz num] [-pccap num]"
-            " [-rcd|-rcld|-rcdd] [-lv] rnum\n", g_progname);
+            " [-rcd|-rcld|-rcdd] [-lv] rnum\n", gt_progname);
     eprintf("  %s queue [-th num] [-it num] [-rnd] [-tc] [-bnum num] [-psiz num] [-pccap num]"
-            " [-rcd|-rcld|-rcdd] [-lv] rnum\n", g_progname);
+            " [-rcd|-rcld|-rcdd] [-lv] rnum\n", gt_progname);
     eprintf("  %s wicked [-th num] [-it num] [-tc] [-bnum num] [-psiz num] [-pccap num]"
-            " [-rcd|-rcld|-rcdd] [-lv] rnum\n", g_progname);
+            " [-rcd|-rcld|-rcdd] [-lv] rnum\n", gt_progname);
     eprintf("  %s tran [-th num] [-it num] [-tc] [-bnum num] [-psiz num] [-pccap num]"
-            " [-rcd|-rcld|-rcdd] [-lv] rnum\n", g_progname);
+            " [-rcd|-rcld|-rcdd] [-lv] rnum\n", gt_progname);
     eprintf("\n");
     std::exit(1);
 }
@@ -102,7 +102,7 @@ static void usage() {
 static void dberrprint(kc::BasicDB* db, int32_t line, const char* func) {
     const kc::BasicDB::Error& err = db->error();
     oprintf("%s: %d: %s: %s: %d: %s: %s\n",
-            g_progname, line, func, db->path().c_str(), err.code(), err.name(), err.message());
+            gt_progname, line, func, db->path().c_str(), err.code(), err.name(), err.message());
 }
 
 
@@ -454,7 +454,7 @@ static int32_t procorder(int64_t rnum, int32_t thnum, bool rnd, bool etc, bool t
     kc::GrassDB db;
     oprintf("opening the database:\n");
     double stime = kc::time();
-    db.tune_logger(stdlogger(g_progname, &std::cout),
+    db.tune_logger(stdlogger(gt_progname, &std::cout),
                    lv ? kc::UINT32MAX : kc::BasicDB::Logger::WARN | kc::BasicDB::Logger::ERROR);
     if (opts > 0) db.tune_options(opts);
     if (bnum > 0) db.tune_buckets(bnum);
@@ -1462,7 +1462,7 @@ static int32_t procqueue(int64_t rnum, int32_t thnum, int32_t itnum, bool rnd,
             opts, (long long)bnum, psiz, (long long)pccap, rcomp, lv);
     bool err = false;
     kc::GrassDB db;
-    db.tune_logger(stdlogger(g_progname, &std::cout),
+    db.tune_logger(stdlogger(gt_progname, &std::cout),
                    lv ? kc::UINT32MAX : kc::BasicDB::Logger::WARN | kc::BasicDB::Logger::ERROR);
     if (opts > 0) db.tune_options(opts);
     if (bnum > 0) db.tune_buckets(bnum);
@@ -1662,7 +1662,7 @@ static int32_t procwicked(int64_t rnum, int32_t thnum, int32_t itnum,
             opts, (long long)bnum, psiz, (long long)pccap, rcomp, lv);
     bool err = false;
     kc::GrassDB db;
-    db.tune_logger(stdlogger(g_progname, &std::cout),
+    db.tune_logger(stdlogger(gt_progname, &std::cout),
                    lv ? kc::UINT32MAX : kc::BasicDB::Logger::WARN | kc::BasicDB::Logger::ERROR);
     if (opts > 0) db.tune_options(opts);
     if (bnum > 0) db.tune_buckets(bnum);
@@ -1965,9 +1965,9 @@ static int32_t proctran(int64_t rnum, int32_t thnum, int32_t itnum,
     bool err = false;
     kc::GrassDB db;
     kc::GrassDB paradb;
-    db.tune_logger(stdlogger(g_progname, &std::cout),
+    db.tune_logger(stdlogger(gt_progname, &std::cout),
                    lv ? kc::UINT32MAX : kc::BasicDB::Logger::WARN | kc::BasicDB::Logger::ERROR);
-    paradb.tune_logger(stdlogger(g_progname, &std::cout), lv ? kc::UINT32MAX :
+    paradb.tune_logger(stdlogger(gt_progname, &std::cout), lv ? kc::UINT32MAX :
                        kc::BasicDB::Logger::WARN | kc::BasicDB::Logger::ERROR);
     if (opts > 0) db.tune_options(opts);
     if (bnum > 0) db.tune_buckets(bnum);

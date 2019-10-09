@@ -21,7 +21,7 @@
 
 
 // global variables
-const char* g_progname;                  // program name
+const char* gt_progname;                  // program name
 uint32_t g_randseed;                     // random seed
 int64_t g_memusage;                      // memory usage
 
@@ -54,7 +54,7 @@ static int32_t proctran(const char* path, int64_t rnum, int32_t thnum, int32_t i
 
 // main routine
 int kctreetest(int argc, char** argv) {
-    g_progname = argv[0];
+    gt_progname = argv[0];
     const char* ebuf = kc::getenv("KCRNDSEED");
     g_randseed = ebuf ? (uint32_t)kc::atoi(ebuf) : (uint32_t)(kc::time() * 1000);
     mysrand(g_randseed);
@@ -86,22 +86,22 @@ int kctreetest(int argc, char** argv) {
 
 // print the usage and exit
 static void usage() {
-    eprintf("%s: test cases of the file tree database of Kyoto Cabinet\n", g_progname);
+    eprintf("%s: test cases of the file tree database of Kyoto Cabinet\n", gt_progname);
     eprintf("\n");
     eprintf("usage:\n");
     eprintf("  %s order [-th num] [-rnd] [-set|-get|-getw|-rem|-etc] [-tran]"
             " [-oat|-oas|-onl|-otl|-onr] [-apow num] [-fpow num] [-ts] [-tl] [-tc] [-bnum num]"
             " [-psiz num] [-msiz num] [-dfunit num] [-pccap num] [-rcd|-rcld|-rcdd] [-lv]"
-            " path rnum\n", g_progname);
+            " path rnum\n", gt_progname);
     eprintf("  %s queue [-th num] [-it num] [-rnd] [-oat|-oas|-onl|-otl|-onr]"
             " [-apow num] [-fpow num] [-ts] [-tl] [-tc] [-bnum num] [-psiz num] [-msiz num]"
-            " [-dfunit num] [-pccap num] [-rcd|-rcld|-rcdd] [-lv] path rnum\n", g_progname);
+            " [-dfunit num] [-pccap num] [-rcd|-rcld|-rcdd] [-lv] path rnum\n", gt_progname);
     eprintf("  %s wicked [-th num] [-it num] [-oat|-oas|-onl|-otl|-onr]"
             " [-apow num] [-fpow num] [-ts] [-tl] [-tc] [-bnum num] [-psiz num] [-msiz num]"
-            " [-dfunit num] [-pccap num] [-rcd|-rcld|-rcdd] [-lv] path rnum\n", g_progname);
+            " [-dfunit num] [-pccap num] [-rcd|-rcld|-rcdd] [-lv] path rnum\n", gt_progname);
     eprintf("  %s tran [-th num] [-it num] [-hard] [-oat|-oas|-onl|-otl|-onr]"
             " [-apow num] [-fpow num] [-ts] [-tl] [-tc] [-bnum num] [-psiz num] [-msiz num]"
-            " [-dfunit num] [-pccap num] [-rcd|-rcld|-rcdd] [-lv] path rnum\n", g_progname);
+            " [-dfunit num] [-pccap num] [-rcd|-rcld|-rcdd] [-lv] path rnum\n", gt_progname);
     eprintf("\n");
     std::exit(1);
 }
@@ -111,7 +111,7 @@ static void usage() {
 static void dberrprint(kc::BasicDB* db, int32_t line, const char* func) {
     const kc::BasicDB::Error& err = db->error();
     oprintf("%s: %d: %s: %s: %d: %s: %s\n",
-            g_progname, line, func, db->path().c_str(), err.code(), err.name(), err.message());
+            gt_progname, line, func, db->path().c_str(), err.code(), err.name(), err.message());
 }
 
 
@@ -630,7 +630,7 @@ static int32_t procorder(const char* path, int64_t rnum, int32_t thnum, bool rnd
     kc::TreeDB db;
     oprintf("opening the database:\n");
     double stime = kc::time();
-    db.tune_logger(stdlogger(g_progname, &std::cout),
+    db.tune_logger(stdlogger(gt_progname, &std::cout),
                    lv ? kc::UINT32MAX : kc::BasicDB::Logger::WARN | kc::BasicDB::Logger::ERROR);
     if (apow >= 0) db.tune_alignment(apow);
     if (fpow >= 0) db.tune_fbp(fpow);
@@ -1666,7 +1666,7 @@ static int32_t procqueue(const char* path, int64_t rnum, int32_t thnum, int32_t 
             rcomp, lv);
     bool err = false;
     kc::TreeDB db;
-    db.tune_logger(stdlogger(g_progname, &std::cout),
+    db.tune_logger(stdlogger(gt_progname, &std::cout),
                    lv ? kc::UINT32MAX : kc::BasicDB::Logger::WARN | kc::BasicDB::Logger::ERROR);
     if (apow >= 0) db.tune_alignment(apow);
     if (fpow >= 0) db.tune_fbp(fpow);
@@ -1873,7 +1873,7 @@ static int32_t procwicked(const char* path, int64_t rnum, int32_t thnum, int32_t
             rcomp, lv);
     bool err = false;
     kc::TreeDB db;
-    db.tune_logger(stdlogger(g_progname, &std::cout),
+    db.tune_logger(stdlogger(gt_progname, &std::cout),
                    lv ? kc::UINT32MAX : kc::BasicDB::Logger::WARN | kc::BasicDB::Logger::ERROR);
     if (apow >= 0) db.tune_alignment(apow);
     if (fpow >= 0) db.tune_fbp(fpow);
@@ -2243,9 +2243,9 @@ static int32_t proctran(const char* path, int64_t rnum, int32_t thnum, int32_t i
     bool err = false;
     kc::TreeDB db;
     kc::TreeDB paradb;
-    db.tune_logger(stdlogger(g_progname, &std::cout),
+    db.tune_logger(stdlogger(gt_progname, &std::cout),
                    lv ? kc::UINT32MAX : kc::BasicDB::Logger::WARN | kc::BasicDB::Logger::ERROR);
-    paradb.tune_logger(stdlogger(g_progname, &std::cout), lv ? kc::UINT32MAX :
+    paradb.tune_logger(stdlogger(gt_progname, &std::cout), lv ? kc::UINT32MAX :
                        kc::BasicDB::Logger::WARN | kc::BasicDB::Logger::ERROR);
     if (apow >= 0) db.tune_alignment(apow);
     if (fpow >= 0) db.tune_fbp(fpow);
