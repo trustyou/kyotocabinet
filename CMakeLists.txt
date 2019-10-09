@@ -11,6 +11,7 @@ set(LIBVER "16")
 set(LIBREV "13")
 set(FMTVER "2")
 
+set(LIBRARY_NAME kyotocabinet)
 set(LIBRARY_VERSION "${LIBVER}.${LIBREV}.${FMTVER}")
 
 set(SOURCE_PATH "src")
@@ -39,33 +40,51 @@ link_libraries(-lz -lstdc++ -lpthread -lm -lc)
 
 # Kyotocabinet library
 
-add_library(kyotocabinet ${SOURCE_PATH}/kcutil.cc ${SOURCE_PATH}/kcthread.cc ${SOURCE_PATH}/kcfile.cc ${SOURCE_PATH}/kccompress.cc ${SOURCE_PATH}/kccompare.cc ${SOURCE_PATH}/kcmap.cc ${SOURCE_PATH}/kcregex.cc ${SOURCE_PATH}/kcdb.cc ${SOURCE_PATH}/kcplantdb.cc ${SOURCE_PATH}/kcprotodb.cc ${SOURCE_PATH}/kcstashdb.cc ${SOURCE_PATH}/kccachedb.cc ${SOURCE_PATH}/kchashdb.cc ${SOURCE_PATH}/kcdirdb.cc ${SOURCE_PATH}/kctextdb.cc ${SOURCE_PATH}/kcpolydb.cc ${SOURCE_PATH}/kcdbext.cc ${SOURCE_PATH}/kclangc.cc ${SOURCE_PATH}/modp_b64.cc)
+add_library(
+  ${LIBRARY_NAME}
+  ${SOURCE_PATH}/kcutil.cc
+  ${SOURCE_PATH}/kcthread.cc
+  ${SOURCE_PATH}/kcfile.cc
+  ${SOURCE_PATH}/kccompress.cc
+  ${SOURCE_PATH}/kccompare.cc
+  ${SOURCE_PATH}/kcmap.cc
+  ${SOURCE_PATH}/kcregex.cc
+  ${SOURCE_PATH}/kcdb.cc
+  ${SOURCE_PATH}/kcplantdb.cc
+  ${SOURCE_PATH}/kcprotodb.cc
+  ${SOURCE_PATH}/kcstashdb.cc
+  ${SOURCE_PATH}/kccachedb.cc
+  ${SOURCE_PATH}/kchashdb.cc
+  ${SOURCE_PATH}/kcdirdb.cc
+  ${SOURCE_PATH}/kctextdb.cc
+  ${SOURCE_PATH}/kcpolydb.cc
+  ${SOURCE_PATH}/kcdbext.cc
+  ${SOURCE_PATH}/kclangc.cc
+  ${SOURCE_PATH}/modp_b64.cc
+)
 
-set_target_properties(kyotocabinet PROPERTIES VERSION ${LIBRARY_VERSION} PUBLIC_HEADER "${INCLUDE_PATH}/kccommon.h;${INCLUDE_PATH}/kcutil.h;${INCLUDE_PATH}/kcthread.h;${INCLUDE_PATH}/kcfile.h;${INCLUDE_PATH}/kccompress.h;${INCLUDE_PATH}/kccompare.h;${INCLUDE_PATH}/kcmap.h;${INCLUDE_PATH}/kcregex.h;${INCLUDE_PATH}/kcdb.h;${INCLUDE_PATH}/kcplantdb.h;${INCLUDE_PATH}/kcprotodb.h;${INCLUDE_PATH}/kcstashdb.h;${INCLUDE_PATH}/kccachedb.h;${INCLUDE_PATH}/kchashdb.h;${INCLUDE_PATH}/kcdirdb.h;${INCLUDE_PATH}/kctextdb.h;${INCLUDE_PATH}/kcpolydb.h;${INCLUDE_PATH}/kcdbext.h;${INCLUDE_PATH}/kclangc.h")
+set_target_properties(
+  ${LIBRARY_NAME}
+  PROPERTIES VERSION ${LIBRARY_VERSION}
+  PUBLIC_HEADER "${INCLUDE_PATH}/kccommon.h;${INCLUDE_PATH}/kcutil.h;${INCLUDE_PATH}/kcthread.h;${INCLUDE_PATH}/kcfile.h;${INCLUDE_PATH}/kccompress.h;${INCLUDE_PATH}/kccompare.h;${INCLUDE_PATH}/kcmap.h;${INCLUDE_PATH}/kcregex.h;${INCLUDE_PATH}/kcdb.h;${INCLUDE_PATH}/kcplantdb.h;${INCLUDE_PATH}/kcprotodb.h;${INCLUDE_PATH}/kcstashdb.h;${INCLUDE_PATH}/kccachedb.h;${INCLUDE_PATH}/kchashdb.h;${INCLUDE_PATH}/kcdirdb.h;${INCLUDE_PATH}/kctextdb.h;${INCLUDE_PATH}/kcpolydb.h;${INCLUDE_PATH}/kcdbext.h;${INCLUDE_PATH}/kclangc.h"
+)
 
 # Binaries
 
-add_executable(kcutilmgr ${SOURCE_PATH}/kcutilmgr.cc ${SOURCE_PATH}/kcutilmgr_impl.cc)
-target_link_libraries(kcutilmgr kyotocabinet)
+set(BINARIES kcutilmgr kchashmgr kctreemgr kcdirmgr kcforestmgr kcpolymgr)
 
-add_executable(kchashmgr ${SOURCE_PATH}/kchashmgr.cc ${SOURCE_PATH}/kchashmgr_impl.cc)
-target_link_libraries(kchashmgr kyotocabinet)
+function(add_binary name)
+  add_executable(${name} ${SOURCE_PATH}/${name} ${SOURCE_PATH}/${name}_impl)
+  target_link_libraries(${name} ${LIBRARY_NAME})
+endfunction()
 
-add_executable(kctreemgr ${SOURCE_PATH}/kctreemgr.cc ${SOURCE_PATH}/kctreemgr_impl.cc)
-target_link_libraries(kctreemgr kyotocabinet)
-
-add_executable(kcdirmgr ${SOURCE_PATH}/kcdirmgr.cc ${SOURCE_PATH}/kcdirmgr_impl.cc)
-target_link_libraries(kcdirmgr kyotocabinet)
-
-add_executable(kcforestmgr ${SOURCE_PATH}/kcforestmgr.cc ${SOURCE_PATH}/kcforestmgr_impl.cc)
-target_link_libraries(kcforestmgr kyotocabinet)
-
-add_executable(kcpolymgr ${SOURCE_PATH}/kcpolymgr.cc ${SOURCE_PATH}/kcpolymgr_impl.cc)
-target_link_libraries(kcpolymgr kyotocabinet)
+foreach(binary ${BINARIES})
+  add_binary(${binary})
+endforeach()
 
 # Installation targets
 
-install(TARGETS kyotocabinet kcutilmgr kchashmgr kctreemgr kcdirmgr kcforestmgr kcpolymgr
+install(TARGETS ${LIBRARY_NAME} ${BINARIES}
 	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
