@@ -69,17 +69,19 @@ extern "C" {
 #endif
 
 #if defined(__CYGWIN__)
-inline long double modfl(long double val, long double* iptr) {
-  double integ;
-  double fract = std::modf(val, &integ);
-  *iptr = integ;
-  return fract;
+inline long double modfl ( long double val, long double *iptr )
+{
+    double integ;
+    double fract = std::modf ( val, &integ );
+    *iptr = integ;
+    return fract;
 }
 #endif
 
-namespace std {
-using ::modfl;
-using ::snprintf;
+namespace std
+{
+    using ::modfl;
+    using ::snprintf;
 }
 
 #if __cplusplus > 199711L || defined(__GXX_EXPERIMENTAL_CXX0X__) || defined(_MSC_VER) || defined(_LIBCPP_VERSION)
@@ -92,10 +94,11 @@ using ::snprintf;
 #include <tr1/unordered_map>
 #include <tr1/unordered_set>
 
-namespace std {
-using tr1::hash;
-using tr1::unordered_map;
-using tr1::unordered_set;
+namespace std
+{
+    using tr1::hash;
+    using tr1::unordered_map;
+    using tr1::unordered_set;
 }
 
 #endif

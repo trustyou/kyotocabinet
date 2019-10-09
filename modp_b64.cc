@@ -45,7 +45,7 @@
 /* if on motoral, sun, ibm; uncomment this */
 /* #define WORDS_BIGENDIAN 1 */
 /* else for Intel, Amd; uncomment this */
-#undef WORDS_BIGENDIAN 
+#undef WORDS_BIGENDIAN
 
 #include "modp_b64_data.h"
 
@@ -81,7 +81,9 @@ size_t modp_b64_encode(char* dest, const char* str, size_t len)
 
     if (len > 2) {
         for (i = 0; i < len - 2; i += 3) {
-            t1 = s[i]; t2 = s[i+1]; t3 = s[i+2];
+            t1 = s[i];
+            t2 = s[i+1];
+            t3 = s[i+2];
             *p++ = e0[t1];
             *p++ = e1[((t1 & 0x03) << 4) | ((t2 >> 4) & 0x0F)];
             *p++ = e1[((t2 & 0x0F) << 2) | ((t3 >> 6) & 0x03)];
@@ -100,7 +102,8 @@ size_t modp_b64_encode(char* dest, const char* str, size_t len)
         *p++ = CHARPAD;
         break;
     default: /* case 2 */
-        t1 = s[i]; t2 = s[i+1];
+        t1 = s[i];
+        t2 = s[i+1];
         *p++ = e0[t1];
         *p++ = e1[((t1 & 0x03) << 4) | ((t2 >> 4) & 0x0F)];
         *p++ = e2[(t2 & 0x0F) << 2];
@@ -242,7 +245,8 @@ size_t modp_b64_decode(char* dest, const char* src, size_t len)
         *destInt = x ;
         p += 3;
         destInt = (uint32_t*)p;
-        y = *srcInt++;}
+        y = *srcInt++;
+    }
 
 
     switch (leftover) {

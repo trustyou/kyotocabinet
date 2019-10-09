@@ -45,92 +45,99 @@ extern "C" {
 /**
  * C wrapper of polymorphic database.
  */
-typedef struct {
-  void* db;                              /**< dummy member */
+typedef struct
+{
+    void *db;                              /**< dummy member */
 } KCDB;
 
 
 /**
  * C wrapper of polymorphic cursor.
  */
-typedef struct {
-  void* cur;                             /**< dummy member */
+typedef struct
+{
+    void *cur;                             /**< dummy member */
 } KCCUR;
 
 
 /**
  * Binary string of byte array.
  */
-typedef struct {
-  char* buf;                             /**< pointer to the data region */
-  size_t size;                           /**< size of the data region */
+typedef struct
+{
+    char *buf;                             /**< pointer to the data region */
+    size_t size;                           /**< size of the data region */
 } KCSTR;
 
 
 /**
  * Key-Value record.
  */
-typedef struct {
-  KCSTR key;                             /**< key string */
-  KCSTR value;                           /**< value string */
+typedef struct
+{
+    KCSTR key;                             /**< key string */
+    KCSTR value;                           /**< value string */
 } KCREC;
 
 
 /**
  * Error codes.
  */
-enum {
-  KCESUCCESS,                            /**< success */
-  KCENOIMPL,                             /**< not implemented */
-  KCEINVALID,                            /**< invalid operation */
-  KCENOREPOS,                            /**< no repository */
-  KCENOPERM,                             /**< no permission */
-  KCEBROKEN,                             /**< broken file */
-  KCEDUPREC,                             /**< record duplication */
-  KCENOREC,                              /**< no record */
-  KCELOGIC,                              /**< logical inconsistency */
-  KCESYSTEM,                             /**< system error */
-  KCEMISC = 15                           /**< miscellaneous error */
+enum
+{
+    KCESUCCESS,                            /**< success */
+    KCENOIMPL,                             /**< not implemented */
+    KCEINVALID,                            /**< invalid operation */
+    KCENOREPOS,                            /**< no repository */
+    KCENOPERM,                             /**< no permission */
+    KCEBROKEN,                             /**< broken file */
+    KCEDUPREC,                             /**< record duplication */
+    KCENOREC,                              /**< no record */
+    KCELOGIC,                              /**< logical inconsistency */
+    KCESYSTEM,                             /**< system error */
+    KCEMISC = 15                           /**< miscellaneous error */
 };
 
 
 /**
  * Open modes.
  */
-enum {
-  KCOREADER = 1 << 0,                    /**< open as a reader */
-  KCOWRITER = 1 << 1,                    /**< open as a writer */
-  KCOCREATE = 1 << 2,                    /**< writer creating */
-  KCOTRUNCATE = 1 << 3,                  /**< writer truncating */
-  KCOAUTOTRAN = 1 << 4,                  /**< auto transaction */
-  KCOAUTOSYNC = 1 << 5,                  /**< auto synchronization */
-  KCONOLOCK = 1 << 6,                    /**< open without locking */
-  KCOTRYLOCK = 1 << 7,                   /**< lock without blocking */
-  KCONOREPAIR = 1 << 8                   /**< open without auto repair */
+enum
+{
+    KCOREADER = 1 << 0,                    /**< open as a reader */
+    KCOWRITER = 1 << 1,                    /**< open as a writer */
+    KCOCREATE = 1 << 2,                    /**< writer creating */
+    KCOTRUNCATE = 1 << 3,                  /**< writer truncating */
+    KCOAUTOTRAN = 1 << 4,                  /**< auto transaction */
+    KCOAUTOSYNC = 1 << 5,                  /**< auto synchronization */
+    KCONOLOCK = 1 << 6,                    /**< open without locking */
+    KCOTRYLOCK = 1 << 7,                   /**< lock without blocking */
+    KCONOREPAIR = 1 << 8                   /**< open without auto repair */
 };
 
 
 /**
  * Merge modes.
  */
-enum {
-  KCMSET,                                /**< overwrite the existing value */
-  KCMADD,                                /**< keep the existing value */
-  KCMREPLACE,                            /**< modify the existing record only */
-  KCMAPPEND                              /**< append the new value */
+enum
+{
+    KCMSET,                                /**< overwrite the existing value */
+    KCMADD,                                /**< keep the existing value */
+    KCMREPLACE,                            /**< modify the existing record only */
+    KCMAPPEND                              /**< append the new value */
 };
 
 
 /** The package version. */
-extern const char* const KCVERSION;
+extern const char *const KCVERSION;
 
 
 /** Special pointer for no operation by the visiting function. */
-extern const char* const KCVISNOP;
+extern const char *const KCVISNOP;
 
 
 /** Special pointer to remove the record by the visiting function. */
-extern const char* const KCVISREMOVE;
+extern const char *const KCVISREMOVE;
 
 
 /**
@@ -145,8 +152,8 @@ extern const char* const KCVISREMOVE;
  * @return If it is the pointer to a region, the value is replaced by the content.  If it
  * is KCVISNOP, nothing is modified.  If it is KCVISREMOVE, the record is removed.
  */
-typedef const char* (*KCVISITFULL)(const char* kbuf, size_t ksiz,
-                                   const char* vbuf, size_t vsiz, size_t* sp, void* opq);
+typedef const char * ( *KCVISITFULL ) ( const char *kbuf, size_t ksiz,
+                                        const char *vbuf, size_t vsiz, size_t *sp, void *opq );
 
 
 /**
@@ -159,7 +166,7 @@ typedef const char* (*KCVISITFULL)(const char* kbuf, size_t ksiz,
  * @return If it is the pointer to a region, the value is replaced by the content.  If it
  * is KCVISNOP or KCVISREMOVE, nothing is modified.
  */
-typedef const char* (*KCVISITEMPTY)(const char* kbuf, size_t ksiz, size_t* sp, void* opq);
+typedef const char * ( *KCVISITEMPTY ) ( const char *kbuf, size_t ksiz, size_t *sp, void *opq );
 
 
 /**
@@ -170,7 +177,7 @@ typedef const char* (*KCVISITEMPTY)(const char* kbuf, size_t ksiz, size_t* sp, v
  * @param opq an opaque pointer.
  * @return true on success, or false on failure.
  */
-typedef int32_t (*KCFILEPROC)(const char* path, int64_t count, int64_t size, void* opq);
+typedef int32_t ( *KCFILEPROC ) ( const char *path, int64_t count, int64_t size, void *opq );
 
 
 /**
@@ -179,21 +186,21 @@ typedef int32_t (*KCFILEPROC)(const char* path, int64_t count, int64_t size, voi
  * @return the pointer to the allocated region.  The region of the return value should be
  * released with the kcfree function when it is no longer in use.
  */
-void* kcmalloc(size_t size);
+void *kcmalloc ( size_t size );
 
 
 /**
  * Release a region allocated in the library.
  * @param ptr the pointer to the region.
  */
-void kcfree(void* ptr);
+void kcfree ( void *ptr );
 
 
 /**
  * Get the time of day in seconds.
  * @return the time of day in seconds.  The accuracy is in microseconds.
  */
-double kctime(void);
+double kctime ( void );
 
 
 /**
@@ -201,7 +208,7 @@ double kctime(void);
  * @param str specifies the string.
  * @return the integer.  If the string does not contain numeric expression, 0 is returned.
  */
-int64_t kcatoi(const char* str);
+int64_t kcatoi ( const char *str );
 
 
 /**
@@ -212,7 +219,7 @@ int64_t kcatoi(const char* str);
  * the integer overflows the domain, INT64_MAX or INT64_MIN is returned according to the
  * sign.
  */
-int64_t kcatoix(const char* str);
+int64_t kcatoix ( const char *str );
 
 
 /**
@@ -221,7 +228,7 @@ int64_t kcatoix(const char* str);
  * @return the real number.  If the string does not contain numeric expression, 0.0 is
  * returned.
  */
-double kcatof(const char* str);
+double kcatof ( const char *str );
 
 
 /**
@@ -230,7 +237,7 @@ double kcatof(const char* str);
  * @param size the size of the source buffer.
  * @return the hash value.
  */
-uint64_t kchashmurmur(const void* buf, size_t size);
+uint64_t kchashmurmur ( const void *buf, size_t size );
 
 
 /**
@@ -239,7 +246,7 @@ uint64_t kchashmurmur(const void* buf, size_t size);
  * @param size the size of the source buffer.
  * @return the hash value.
  */
-uint64_t kchashfnv(const void* buf, size_t size);
+uint64_t kchashfnv ( const void *buf, size_t size );
 
 
 /**
@@ -251,7 +258,7 @@ uint64_t kchashfnv(const void* buf, size_t size);
  * @param utf flag to treat keys as UTF-8 strings.
  * @return the levenshtein distance of two regions.
  */
-size_t kclevdist(const void* abuf, size_t asiz, const void* bbuf, size_t bsiz, int32_t utf);
+size_t kclevdist ( const void *abuf, size_t asiz, const void *bbuf, size_t bsiz, int32_t utf );
 
 
 /**
@@ -272,14 +279,14 @@ double kcinf();
  * Check a number is a Not-a-Number value.
  * @return true for the number is a Not-a-Number value, or false if not.
  */
-int32_t kcchknan(double num);
+int32_t kcchknan ( double num );
 
 
 /**
  * Check a number is an infinity value.
  * @return true for the number is an infinity value, or false if not.
  */
-int32_t kcchkinf(double num);
+int32_t kcchkinf ( double num );
 
 
 /**
@@ -287,7 +294,7 @@ int32_t kcchkinf(double num);
  * @param code the error code.
  * @return the readable string of the error code.
  */
-const char* kcecodename(int32_t code);
+const char *kcecodename ( int32_t code );
 
 
 /**
@@ -296,14 +303,14 @@ const char* kcecodename(int32_t code);
  * @note The object of the return value should be released with the kcdbdel function when it is
  * no longer in use.
  */
-KCDB* kcdbnew(void);
+KCDB *kcdbnew ( void );
 
 
 /**
  * Destroy a database object.
  * @param db the database object.
  */
-void kcdbdel(KCDB* db);
+void kcdbdel ( KCDB *db );
 
 
 /**
@@ -360,7 +367,7 @@ void kcdbdel(KCDB* db);
  * no longer in use.  It is not allowed for two or more database objects in the same process to
  * keep their connections to the same database file at the same time.
  */
-int32_t kcdbopen(KCDB* db, const char* path, uint32_t mode);
+int32_t kcdbopen ( KCDB *db, const char *path, uint32_t mode );
 
 
 /**
@@ -368,7 +375,7 @@ int32_t kcdbopen(KCDB* db, const char* path, uint32_t mode);
  * @param db a database object.
  * @return true on success, or false on failure.
  */
-int32_t kcdbclose(KCDB* db);
+int32_t kcdbclose ( KCDB *db );
 
 
 /**
@@ -376,7 +383,7 @@ int32_t kcdbclose(KCDB* db);
  * @param db a database object.
  * @return the code of the last happened error.
  */
-int32_t kcdbecode(KCDB* db);
+int32_t kcdbecode ( KCDB *db );
 
 
 /**
@@ -384,7 +391,7 @@ int32_t kcdbecode(KCDB* db);
  * @param db a database object.
  * @return the supplement message of the last happened error.
  */
-const char* kcdbemsg(KCDB* db);
+const char *kcdbemsg ( KCDB *db );
 
 
 /**
@@ -401,8 +408,8 @@ const char* kcdbemsg(KCDB* db);
  * same record are blocked.  To avoid deadlock, any explicit database operation must not be
  * performed in this function.
  */
-int32_t kcdbaccept(KCDB* db, const char* kbuf, size_t ksiz,
-                   KCVISITFULL fullproc, KCVISITEMPTY emptyproc, void* opq, int32_t writable);
+int32_t kcdbaccept ( KCDB *db, const char *kbuf, size_t ksiz,
+                     KCVISITFULL fullproc, KCVISITEMPTY emptyproc, void *opq, int32_t writable );
 
 
 /**
@@ -419,9 +426,9 @@ int32_t kcdbaccept(KCDB* db, const char* kbuf, size_t ksiz,
  * accessing the same records are blocked.  To avoid deadlock, any explicit database operation
  * must not be performed in this function.
  */
-int32_t kcdbacceptbulk(KCDB* db, const KCSTR* keys, size_t knum,
-                       KCVISITFULL fullproc, KCVISITEMPTY emptyproc,
-                       void* opq, int32_t writable);
+int32_t kcdbacceptbulk ( KCDB *db, const KCSTR *keys, size_t knum,
+                         KCVISITFULL fullproc, KCVISITEMPTY emptyproc,
+                         void *opq, int32_t writable );
 
 
 /**
@@ -434,7 +441,7 @@ int32_t kcdbacceptbulk(KCDB* db, const KCSTR* keys, size_t knum,
  * @note The whole iteration is performed atomically and other threads are blocked.  To avoid
  * deadlock, any explicit database operation must not be performed in this function.
  */
-int32_t kcdbiterate(KCDB* db, KCVISITFULL fullproc, void* opq, int32_t writable);
+int32_t kcdbiterate ( KCDB *db, KCVISITFULL fullproc, void *opq, int32_t writable );
 
 
 /**
@@ -448,7 +455,7 @@ int32_t kcdbiterate(KCDB* db, KCVISITFULL fullproc, void* opq, int32_t writable)
  * the visitor is just ignored.  To avoid deadlock, any explicit database operation must not
  * be performed in this function.
  */
-int32_t kcdbscanpara(KCDB* db, KCVISITFULL fullproc, void* opq, size_t thnum);
+int32_t kcdbscanpara ( KCDB *db, KCVISITFULL fullproc, void *opq, size_t thnum );
 
 
 /**
@@ -462,7 +469,7 @@ int32_t kcdbscanpara(KCDB* db, KCVISITFULL fullproc, void* opq, size_t thnum);
  * @note If no record corresponds to the key, a new record is created.  If the corresponding
  * record exists, the value is overwritten.
  */
-int32_t kcdbset(KCDB* db, const char* kbuf, size_t ksiz, const char* vbuf, size_t vsiz);
+int32_t kcdbset ( KCDB *db, const char *kbuf, size_t ksiz, const char *vbuf, size_t vsiz );
 
 
 /**
@@ -476,7 +483,7 @@ int32_t kcdbset(KCDB* db, const char* kbuf, size_t ksiz, const char* vbuf, size_
  * @note If no record corresponds to the key, a new record is created.  If the corresponding
  * record exists, the record is not modified and false is returned.
  */
-int32_t kcdbadd(KCDB* db, const char* kbuf, size_t ksiz, const char* vbuf, size_t vsiz);
+int32_t kcdbadd ( KCDB *db, const char *kbuf, size_t ksiz, const char *vbuf, size_t vsiz );
 
 
 /**
@@ -490,7 +497,7 @@ int32_t kcdbadd(KCDB* db, const char* kbuf, size_t ksiz, const char* vbuf, size_
  * @note If no record corresponds to the key, no new record is created and false is returned.
  * If the corresponding record exists, the value is modified.
  */
-int32_t kcdbreplace(KCDB* db, const char* kbuf, size_t ksiz, const char* vbuf, size_t vsiz);
+int32_t kcdbreplace ( KCDB *db, const char *kbuf, size_t ksiz, const char *vbuf, size_t vsiz );
 
 
 /**
@@ -504,7 +511,7 @@ int32_t kcdbreplace(KCDB* db, const char* kbuf, size_t ksiz, const char* vbuf, s
  * @note If no record corresponds to the key, a new record is created.  If the corresponding
  * record exists, the given value is appended at the end of the existing value.
  */
-int32_t kcdbappend(KCDB* db, const char* kbuf, size_t ksiz, const char* vbuf, size_t vsiz);
+int32_t kcdbappend ( KCDB *db, const char *kbuf, size_t ksiz, const char *vbuf, size_t vsiz );
 
 
 /**
@@ -520,7 +527,7 @@ int32_t kcdbappend(KCDB* db, const char* kbuf, size_t ksiz, const char* vbuf, si
  * @note The value is serialized as an 8-byte binary integer in big-endian order, not a decimal
  * string.  If existing value is not 8-byte, this function fails.
  */
-int64_t kcdbincrint(KCDB* db, const char* kbuf, size_t ksiz, int64_t num, int64_t orig);
+int64_t kcdbincrint ( KCDB *db, const char *kbuf, size_t ksiz, int64_t num, int64_t orig );
 
 
 /**
@@ -536,7 +543,7 @@ int64_t kcdbincrint(KCDB* db, const char* kbuf, size_t ksiz, int64_t num, int64_
  * @note The value is serialized as an 16-byte binary fixed-point number in big-endian order,
  * not a decimal string.  If existing value is not 16-byte, this function fails.
  */
-double kcdbincrdouble(KCDB* db, const char* kbuf, size_t ksiz, double num, double orig);
+double kcdbincrdouble ( KCDB *db, const char *kbuf, size_t ksiz, double num, double orig );
 
 
 /**
@@ -550,8 +557,8 @@ double kcdbincrdouble(KCDB* db, const char* kbuf, size_t ksiz, double num, doubl
  * @param nvsiz the size of new old value region.
  * @return true on success, or false on failure.
  */
-int32_t kcdbcas(KCDB* db, const char* kbuf, size_t ksiz,
-                const char* ovbuf, size_t ovsiz, const char* nvbuf, size_t nvsiz);
+int32_t kcdbcas ( KCDB *db, const char *kbuf, size_t ksiz,
+                  const char *ovbuf, size_t ovsiz, const char *nvbuf, size_t nvsiz );
 
 
 /**
@@ -562,7 +569,7 @@ int32_t kcdbcas(KCDB* db, const char* kbuf, size_t ksiz,
  * @return true on success, or false on failure.
  * @note If no record corresponds to the key, false is returned.
  */
-int32_t kcdbremove(KCDB* db, const char* kbuf, size_t ksiz);
+int32_t kcdbremove ( KCDB *db, const char *kbuf, size_t ksiz );
 
 
 /**
@@ -578,7 +585,7 @@ int32_t kcdbremove(KCDB* db, const char* kbuf, size_t ksiz);
  * treated as a C-style string.  The region of the return value should be released with the
  * kcfree function when it is no longer in use.
  */
-char* kcdbget(KCDB* db, const char* kbuf, size_t ksiz, size_t* sp);
+char *kcdbget ( KCDB *db, const char *kbuf, size_t ksiz, size_t *sp );
 
 
 /**
@@ -588,7 +595,7 @@ char* kcdbget(KCDB* db, const char* kbuf, size_t ksiz, size_t* sp);
  * @param ksiz the size of the key region.
  * @return the size of the value, or -1 on failure.
  */
-int32_t kcdbcheck(KCDB* db, const char* kbuf, size_t ksiz);
+int32_t kcdbcheck ( KCDB *db, const char *kbuf, size_t ksiz );
 
 
 /**
@@ -601,7 +608,7 @@ int32_t kcdbcheck(KCDB* db, const char* kbuf, size_t ksiz);
  * @param max the size of the buffer.
  * @return the size of the value, or -1 on failure.
  */
-int32_t kcdbgetbuf(KCDB* db, const char* kbuf, size_t ksiz, char* vbuf, size_t max);
+int32_t kcdbgetbuf ( KCDB *db, const char *kbuf, size_t ksiz, char *vbuf, size_t max );
 
 
 /**
@@ -617,7 +624,7 @@ int32_t kcdbgetbuf(KCDB* db, const char* kbuf, size_t ksiz, char* vbuf, size_t m
  * treated as a C-style string.  The region of the return value should be released with the
  * kcfree function when it is no longer in use.
  */
-char* kcdbseize(KCDB* db, const char* kbuf, size_t ksiz, size_t* sp);
+char *kcdbseize ( KCDB *db, const char *kbuf, size_t ksiz, size_t *sp );
 
 
 /**
@@ -628,7 +635,7 @@ char* kcdbseize(KCDB* db, const char* kbuf, size_t ksiz, size_t* sp);
  * @param atomic true to perform all operations atomically, or false for non-atomic operations.
  * @return the number of stored records, or -1 on failure.
  */
-int64_t kcdbsetbulk(KCDB* db, const KCREC* recs, size_t rnum, int32_t atomic);
+int64_t kcdbsetbulk ( KCDB *db, const KCREC *recs, size_t rnum, int32_t atomic );
 
 
 /**
@@ -639,7 +646,7 @@ int64_t kcdbsetbulk(KCDB* db, const KCREC* recs, size_t rnum, int32_t atomic);
  * @param atomic true to perform all operations atomically, or false for non-atomic operations.
  * @return the number of removed records, or -1 on failure.
  */
-int64_t kcdbremovebulk(KCDB* db, const KCSTR* keys, size_t knum, int32_t atomic);
+int64_t kcdbremovebulk ( KCDB *db, const KCSTR *keys, size_t knum, int32_t atomic );
 
 
 /**
@@ -653,7 +660,7 @@ int64_t kcdbremovebulk(KCDB* db, const KCSTR* keys, size_t knum, int32_t atomic)
  * @note The regions of the key and the value of each element of the result should be released
  * with the kcfree function when it is no longer in use.
  */
-int64_t kcdbgetbulk(KCDB* db, const KCSTR* keys, size_t knum, KCREC* recs, int32_t atomic);
+int64_t kcdbgetbulk ( KCDB *db, const KCSTR *keys, size_t knum, KCREC *recs, int32_t atomic );
 
 
 /**
@@ -669,7 +676,7 @@ int64_t kcdbgetbulk(KCDB* db, const KCSTR* keys, size_t knum, KCREC* recs, int32
  * the same record are blocked.  To avoid deadlock, any explicit database operation must not
  * be performed in this function.
  */
-int32_t kcdbsync(KCDB* db, int32_t hard, KCFILEPROC proc, void* opq);
+int32_t kcdbsync ( KCDB *db, int32_t hard, KCFILEPROC proc, void *opq );
 
 
 /**
@@ -683,7 +690,7 @@ int32_t kcdbsync(KCDB* db, int32_t hard, KCFILEPROC proc, void* opq);
  * the same record are blocked.  To avoid deadlock, any explicit database operation must not
  * be performed in this function.
  */
-int32_t kcdboccupy(KCDB* db, int32_t writable, KCFILEPROC proc, void* opq);
+int32_t kcdboccupy ( KCDB *db, int32_t writable, KCFILEPROC proc, void *opq );
 
 
 /**
@@ -692,7 +699,7 @@ int32_t kcdboccupy(KCDB* db, int32_t writable, KCFILEPROC proc, void* opq);
  * @param dest the path of the destination file.
  * @return true on success, or false on failure.
  */
-int32_t kcdbcopy(KCDB* db, const char* dest);
+int32_t kcdbcopy ( KCDB *db, const char *dest );
 
 
 /**
@@ -702,7 +709,7 @@ int32_t kcdbcopy(KCDB* db, const char* dest);
  * synchronization with the file system.
  * @return true on success, or false on failure.
  */
-int32_t kcdbbegintran(KCDB* db, int32_t hard);
+int32_t kcdbbegintran ( KCDB *db, int32_t hard );
 
 
 /**
@@ -712,7 +719,7 @@ int32_t kcdbbegintran(KCDB* db, int32_t hard);
  * synchronization with the file system.
  * @return true on success, or false on failure.
  */
-int32_t kcdbbegintrantry(KCDB* db, int32_t hard);
+int32_t kcdbbegintrantry ( KCDB *db, int32_t hard );
 
 
 /**
@@ -721,7 +728,7 @@ int32_t kcdbbegintrantry(KCDB* db, int32_t hard);
  * @param commit true to commit the transaction, or false to abort the transaction.
  * @return true on success, or false on failure.
  */
-int32_t kcdbendtran(KCDB* db, int32_t commit);
+int32_t kcdbendtran ( KCDB *db, int32_t commit );
 
 
 /**
@@ -729,7 +736,7 @@ int32_t kcdbendtran(KCDB* db, int32_t commit);
  * @param db a database object.
  * @return true on success, or false on failure.
  */
-int32_t kcdbclear(KCDB* db);
+int32_t kcdbclear ( KCDB *db );
 
 
 /**
@@ -738,7 +745,7 @@ int32_t kcdbclear(KCDB* db);
  * @param dest the path of the destination file.
  * @return true on success, or false on failure.
  */
-int32_t kcdbdumpsnap(KCDB* db, const char* dest);
+int32_t kcdbdumpsnap ( KCDB *db, const char *dest );
 
 
 /**
@@ -747,7 +754,7 @@ int32_t kcdbdumpsnap(KCDB* db, const char* dest);
  * @param src the path of the source file.
  * @return true on success, or false on failure.
  */
-int32_t kcdbloadsnap(KCDB* db, const char* src);
+int32_t kcdbloadsnap ( KCDB *db, const char *src );
 
 
 /**
@@ -755,7 +762,7 @@ int32_t kcdbloadsnap(KCDB* db, const char* src);
  * @param db a database object.
  * @return the number of records, or -1 on failure.
  */
-int64_t kcdbcount(KCDB* db);
+int64_t kcdbcount ( KCDB *db );
 
 
 /**
@@ -763,7 +770,7 @@ int64_t kcdbcount(KCDB* db);
  * @param db a database object.
  * @return the size of the database file in bytes, or -1 on failure.
  */
-int64_t kcdbsize(KCDB* db);
+int64_t kcdbsize ( KCDB *db );
 
 
 /**
@@ -773,7 +780,7 @@ int64_t kcdbsize(KCDB* db);
  * @note The region of the return value should be released with the kcfree function when it is
  * no longer in use.
  */
-char* kcdbpath(KCDB* db);
+char *kcdbpath ( KCDB *db );
 
 
 /**
@@ -784,7 +791,7 @@ char* kcdbpath(KCDB* db);
  * @note The region of the return value should be released with the kcfree function when it is
  * no longer in use.
  */
-char* kcdbstatus(KCDB* db);
+char *kcdbstatus ( KCDB *db );
 
 
 /**
@@ -797,7 +804,7 @@ char* kcdbstatus(KCDB* db);
  * @note The region of each element of the result should be released with the kcfree function
  * when it is no longer in use.
  */
-int64_t kcdbmatchprefix(KCDB* db, const char* prefix, char** strary, size_t max);
+int64_t kcdbmatchprefix ( KCDB *db, const char *prefix, char **strary, size_t max );
 
 
 /**
@@ -810,7 +817,7 @@ int64_t kcdbmatchprefix(KCDB* db, const char* prefix, char** strary, size_t max)
  * @note The region of each element of the result should be released with the kcfree function
  * when it is no longer in use.
  */
-int64_t kcdbmatchregex(KCDB* db, const char* regex, char** strary, size_t max);
+int64_t kcdbmatchregex ( KCDB *db, const char *regex, char **strary, size_t max );
 
 
 /**
@@ -825,8 +832,8 @@ int64_t kcdbmatchregex(KCDB* db, const char* regex, char** strary, size_t max);
  * @note The region of each element of the result should be released with the kcfree function
  * when it is no longer in use.
  */
-int64_t kcdbmatchsimilar(KCDB* db, const char* origin, uint32_t range, int32_t utf,
-                         char** strary, size_t max);
+int64_t kcdbmatchsimilar ( KCDB *db, const char *origin, uint32_t range, int32_t utf,
+                           char **strary, size_t max );
 
 
 /**
@@ -839,7 +846,7 @@ int64_t kcdbmatchsimilar(KCDB* db, const char* origin, uint32_t range, int32_t u
  * value.
  * @return true on success, or false on failure.
  */
-int32_t kcdbmerge(KCDB* db, KCDB** srcary, size_t srcnum, uint32_t mode);
+int32_t kcdbmerge ( KCDB *db, KCDB **srcary, size_t srcnum, uint32_t mode );
 
 
 /**
@@ -849,14 +856,14 @@ int32_t kcdbmerge(KCDB* db, KCDB** srcary, size_t srcnum, uint32_t mode);
  * @note The object of the return value should be released with the kccurdel function when it is
  * no longer in use.
  */
-KCCUR* kcdbcursor(KCDB* db);
+KCCUR *kcdbcursor ( KCDB *db );
 
 
 /**
  * Destroy a cursor object.
  * @param cur the cursor object.
  */
-void kccurdel(KCCUR* cur);
+void kccurdel ( KCCUR *cur );
 
 
 /**
@@ -871,8 +878,8 @@ void kccurdel(KCCUR* cur);
  * the same record are blocked.  To avoid deadlock, any explicit database operation must not
  * be performed in this function.
  */
-int32_t kccuraccept(KCCUR* cur, KCVISITFULL fullproc, void* opq,
-                    int32_t writable, int32_t step);
+int32_t kccuraccept ( KCCUR *cur, KCVISITFULL fullproc, void *opq,
+                      int32_t writable, int32_t step );
 
 
 /**
@@ -883,7 +890,7 @@ int32_t kccuraccept(KCCUR* cur, KCVISITFULL fullproc, void* opq,
  * @param step true to move the cursor to the next record, or false for no move.
  * @return true on success, or false on failure.
  */
-int32_t kccursetvalue(KCCUR* cur, const char* vbuf, size_t vsiz, int32_t step);
+int32_t kccursetvalue ( KCCUR *cur, const char *vbuf, size_t vsiz, int32_t step );
 
 
 /**
@@ -893,7 +900,7 @@ int32_t kccursetvalue(KCCUR* cur, const char* vbuf, size_t vsiz, int32_t step);
  * @note If no record corresponds to the key, false is returned.  The cursor is moved to the
  * next record implicitly.
  */
-int32_t kccurremove(KCCUR* cur);
+int32_t kccurremove ( KCCUR *cur );
 
 
 /**
@@ -908,7 +915,7 @@ int32_t kccurremove(KCCUR* cur);
  * treated as a C-style string.  The region of the return value should be released with the
  * kcfree function when it is no longer in use.
  */
-char* kccurgetkey(KCCUR* cur, size_t* sp, int32_t step);
+char *kccurgetkey ( KCCUR *cur, size_t *sp, int32_t step );
 
 
 /**
@@ -923,7 +930,7 @@ char* kccurgetkey(KCCUR* cur, size_t* sp, int32_t step);
  * treated as a C-style string.  The region of the return value should be released with the
  * kcfree function when it is no longer in use.
  */
-char* kccurgetvalue(KCCUR* cur, size_t* sp, int32_t step);
+char *kccurgetvalue ( KCCUR *cur, size_t *sp, int32_t step );
 
 
 /**
@@ -942,7 +949,7 @@ char* kccurgetvalue(KCCUR* cur, size_t* sp, int32_t step);
  * as a C-style string.  The region of the return value should be released with the kcfree
  * function when it is no longer in use.
  */
-char* kccurget(KCCUR* cur, size_t* ksp, const char** vbp, size_t* vsp, int32_t step);
+char *kccurget ( KCCUR *cur, size_t *ksp, const char **vbp, size_t *vsp, int32_t step );
 
 
 /**
@@ -960,7 +967,7 @@ char* kccurget(KCCUR* cur, size_t* ksp, const char** vbp, size_t* vsp, int32_t s
  * as a C-style string.  The region of the return value should be released with the kcfree
  * function when it is no longer in use.  The cursor is moved to the next record implicitly.
  */
-char* kccurseize(KCCUR* cur, size_t* ksp, const char** vbp, size_t* vsp);
+char *kccurseize ( KCCUR *cur, size_t *ksp, const char **vbp, size_t *vsp );
 
 
 /**
@@ -968,7 +975,7 @@ char* kccurseize(KCCUR* cur, size_t* ksp, const char** vbp, size_t* vsp);
  * @param cur a cursor object.
  * @return true on success, or false on failure.
  */
-int32_t kccurjump(KCCUR* cur);
+int32_t kccurjump ( KCCUR *cur );
 
 
 /**
@@ -978,7 +985,7 @@ int32_t kccurjump(KCCUR* cur);
  * @param ksiz the size of the key region.
  * @return true on success, or false on failure.
  */
-int32_t kccurjumpkey(KCCUR* cur, const char* kbuf, size_t ksiz);
+int32_t kccurjumpkey ( KCCUR *cur, const char *kbuf, size_t ksiz );
 
 
 /**
@@ -988,7 +995,7 @@ int32_t kccurjumpkey(KCCUR* cur, const char* kbuf, size_t ksiz);
  * @note This method is dedicated to tree databases.  Some database types, especially hash
  * databases, may provide a dummy implementation.
  */
-int32_t kccurjumpback(KCCUR* cur);
+int32_t kccurjumpback ( KCCUR *cur );
 
 
 /**
@@ -1000,7 +1007,7 @@ int32_t kccurjumpback(KCCUR* cur);
  * @note This method is dedicated to tree databases.  Some database types, especially hash
  * databases, will provide a dummy implementation.
  */
-int32_t kccurjumpbackkey(KCCUR* cur, const char* kbuf, size_t ksiz);
+int32_t kccurjumpbackkey ( KCCUR *cur, const char *kbuf, size_t ksiz );
 
 
 /**
@@ -1008,7 +1015,7 @@ int32_t kccurjumpbackkey(KCCUR* cur, const char* kbuf, size_t ksiz);
  * @param cur a cursor object.
  * @return true on success, or false on failure.
  */
-int32_t kccurstep(KCCUR* cur);
+int32_t kccurstep ( KCCUR *cur );
 
 
 /**
@@ -1018,7 +1025,7 @@ int32_t kccurstep(KCCUR* cur);
  * @note This method is dedicated to tree databases.  Some database types, especially hash
  * databases, may provide a dummy implementation.
  */
-int32_t kccurstepback(KCCUR* cur);
+int32_t kccurstepback ( KCCUR *cur );
 
 
 /**
@@ -1026,7 +1033,7 @@ int32_t kccurstepback(KCCUR* cur);
  * @param cur a cursor object.
  * @return the database object.
  */
-KCDB* kccurdb(KCCUR* cur);
+KCDB *kccurdb ( KCCUR *cur );
 
 
 /**
@@ -1034,7 +1041,7 @@ KCDB* kccurdb(KCCUR* cur);
  * @param cur a cursor object.
  * @return the code of the last happened error.
  */
-int32_t kccurecode(KCCUR* cur);
+int32_t kccurecode ( KCCUR *cur );
 
 
 /**
@@ -1042,14 +1049,15 @@ int32_t kccurecode(KCCUR* cur);
  * @param cur a cursor object.
  * @return the supplement message of the last happened error.
  */
-const char* kccuremsg(KCCUR* cur);
+const char *kccuremsg ( KCCUR *cur );
 
 
 /**
  * C wrapper of index database.
  */
-typedef struct {
-  void* db;                              /**< dummy member */
+typedef struct
+{
+    void *db;                              /**< dummy member */
 } KCIDX;
 
 
@@ -1059,14 +1067,14 @@ typedef struct {
  * @note The object of the return value should be released with the kcidxdel function when it is
  * no longer in use.
  */
-KCIDX* kcidxnew(void);
+KCIDX *kcidxnew ( void );
 
 
 /**
  * Destroy a database object.
  * @param idx the database object.
  */
-void kcidxdel(KCIDX* idx);
+void kcidxdel ( KCIDX *idx );
 
 
 /**
@@ -1076,7 +1084,7 @@ void kcidxdel(KCIDX* idx);
  * @param mode the connection mode.  The same as with the polymorphic database.
  * @return true on success, or false on failure.
  */
-int32_t kcidxopen(KCIDX* idx, const char* path, uint32_t mode);
+int32_t kcidxopen ( KCIDX *idx, const char *path, uint32_t mode );
 
 
 /**
@@ -1084,7 +1092,7 @@ int32_t kcidxopen(KCIDX* idx, const char* path, uint32_t mode);
  * @param idx a database object.
  * @return true on success, or false on failure.
  */
-int32_t kcidxclose(KCIDX* idx);
+int32_t kcidxclose ( KCIDX *idx );
 
 
 /**
@@ -1092,7 +1100,7 @@ int32_t kcidxclose(KCIDX* idx);
  * @param idx a database object.
  * @return the code of the last happened error.
  */
-int32_t kcidxecode(KCIDX* idx);
+int32_t kcidxecode ( KCIDX *idx );
 
 
 /**
@@ -1100,7 +1108,7 @@ int32_t kcidxecode(KCIDX* idx);
  * @param idx a database object.
  * @return the supplement message of the last happened error.
  */
-const char* kcidxemsg(KCIDX* idx);
+const char *kcidxemsg ( KCIDX *idx );
 
 
 /**
@@ -1114,7 +1122,7 @@ const char* kcidxemsg(KCIDX* idx);
  * @note If no record corresponds to the key, a new record is created.  If the corresponding
  * record exists, the value is overwritten.
  */
-int32_t kcidxset(KCIDX* idx, const char* kbuf, size_t ksiz, const char* vbuf, size_t vsiz);
+int32_t kcidxset ( KCIDX *idx, const char *kbuf, size_t ksiz, const char *vbuf, size_t vsiz );
 
 
 /**
@@ -1128,7 +1136,7 @@ int32_t kcidxset(KCIDX* idx, const char* kbuf, size_t ksiz, const char* vbuf, si
  * @note If no record corresponds to the key, a new record is created.  If the corresponding
  * record exists, the record is not modified and false is returned.
  */
-int32_t kcidxadd(KCIDX* idx, const char* kbuf, size_t ksiz, const char* vbuf, size_t vsiz);
+int32_t kcidxadd ( KCIDX *idx, const char *kbuf, size_t ksiz, const char *vbuf, size_t vsiz );
 
 
 /**
@@ -1142,7 +1150,7 @@ int32_t kcidxadd(KCIDX* idx, const char* kbuf, size_t ksiz, const char* vbuf, si
  * @note If no record corresponds to the key, no new record is created and false is returned.
  * If the corresponding record exists, the value is modified.
  */
-int32_t kcidxreplace(KCIDX* idx, const char* kbuf, size_t ksiz, const char* vbuf, size_t vsiz);
+int32_t kcidxreplace ( KCIDX *idx, const char *kbuf, size_t ksiz, const char *vbuf, size_t vsiz );
 
 
 /**
@@ -1156,7 +1164,7 @@ int32_t kcidxreplace(KCIDX* idx, const char* kbuf, size_t ksiz, const char* vbuf
  * @note If no record corresponds to the key, a new record is created.  If the corresponding
  * record exists, the given value is appended at the end of the existing value.
  */
-int32_t kcidxappend(KCIDX* idx, const char* kbuf, size_t ksiz, const char* vbuf, size_t vsiz);
+int32_t kcidxappend ( KCIDX *idx, const char *kbuf, size_t ksiz, const char *vbuf, size_t vsiz );
 
 
 /**
@@ -1167,7 +1175,7 @@ int32_t kcidxappend(KCIDX* idx, const char* kbuf, size_t ksiz, const char* vbuf,
  * @return true on success, or false on failure.
  * @note If no record corresponds to the key, false is returned.
  */
-int32_t kcidxremove(KCIDX* idx, const char* kbuf, size_t ksiz);
+int32_t kcidxremove ( KCIDX *idx, const char *kbuf, size_t ksiz );
 
 
 /**
@@ -1183,7 +1191,7 @@ int32_t kcidxremove(KCIDX* idx, const char* kbuf, size_t ksiz);
  * treated as a C-style string.  The region of the return value should be released with the
  * kcfree function when it is no longer in use.
  */
-char* kcidxget(KCIDX* idx, const char* kbuf, size_t ksiz, size_t* sp);
+char *kcidxget ( KCIDX *idx, const char *kbuf, size_t ksiz, size_t *sp );
 
 
 /**
@@ -1199,7 +1207,7 @@ char* kcidxget(KCIDX* idx, const char* kbuf, size_t ksiz, size_t* sp);
  * the same record are blocked.  To avoid deadlock, any explicit database operation must not
  * be performed in this function.
  */
-int32_t kcidxsync(KCIDX* idx, int32_t hard, KCFILEPROC proc, void* opq);
+int32_t kcidxsync ( KCIDX *idx, int32_t hard, KCFILEPROC proc, void *opq );
 
 
 /**
@@ -1207,7 +1215,7 @@ int32_t kcidxsync(KCIDX* idx, int32_t hard, KCFILEPROC proc, void* opq);
  * @param idx a database object.
  * @return true on success, or false on failure.
  */
-int32_t kcidxclear(KCIDX* idx);
+int32_t kcidxclear ( KCIDX *idx );
 
 
 /**
@@ -1215,7 +1223,7 @@ int32_t kcidxclear(KCIDX* idx);
  * @param idx a database object.
  * @return the number of records, or -1 on failure.
  */
-int64_t kcidxcount(KCIDX* idx);
+int64_t kcidxcount ( KCIDX *idx );
 
 
 /**
@@ -1223,7 +1231,7 @@ int64_t kcidxcount(KCIDX* idx);
  * @param idx a database object.
  * @return the size of the database file in bytes, or -1 on failure.
  */
-int64_t kcidxsize(KCIDX* idx);
+int64_t kcidxsize ( KCIDX *idx );
 
 
 /**
@@ -1233,7 +1241,7 @@ int64_t kcidxsize(KCIDX* idx);
  * @note The region of the return value should be released with the kcfree function when it is
  * no longer in use.
  */
-char* kcidxpath(KCIDX* idx);
+char *kcidxpath ( KCIDX *idx );
 
 
 /**
@@ -1244,37 +1252,40 @@ char* kcidxpath(KCIDX* idx);
  * @note The region of the return value should be released with the kcfree function when it is
  * no longer in use.
  */
-char* kcidxstatus(KCIDX* idx);
+char *kcidxstatus ( KCIDX *idx );
 
 
 /**
  * Reveal the inner database object.
  * @return the inner database object, or NULL on failure.
  */
-KCDB* kcidxrevealinnerdb(KCIDX* idx);
+KCDB *kcidxrevealinnerdb ( KCIDX *idx );
 
 
 /**
  * C wrapper of memory-saving string hash map.
  */
-typedef struct {
-  void* map;                             /**< dummy member */
+typedef struct
+{
+    void *map;                             /**< dummy member */
 } KCMAP;
 
 
 /**
  * C wrapper of iterator of memory-saving string hash map.
  */
-typedef struct {
-  void* iter;                            /**< dummy member */
+typedef struct
+{
+    void *iter;                            /**< dummy member */
 } KCMAPITER;
 
 
 /**
  * C wrapper of sorter of memory-saving string hash map.
  */
-typedef struct {
-  void* iter;                            /**< dummy member */
+typedef struct
+{
+    void *iter;                            /**< dummy member */
 } KCMAPSORT;
 
 
@@ -1286,14 +1297,14 @@ typedef struct {
  * @note The object of the return value should be released with the kcmapdel function when it is
  * no longer in use.
  */
-KCMAP* kcmapnew(size_t bnum);
+KCMAP *kcmapnew ( size_t bnum );
 
 
 /**
  * Destroy a map object.
  * @param map the map object.
  */
-void kcmapdel(KCMAP* map);
+void kcmapdel ( KCMAP *map );
 
 
 /**
@@ -1306,7 +1317,7 @@ void kcmapdel(KCMAP* map);
  * @note If no record corresponds to the key, a new record is created.  If the corresponding
  * record exists, the value is overwritten.
  */
-void kcmapset(KCMAP* map, const char* kbuf, size_t ksiz, const char* vbuf, size_t vsiz);
+void kcmapset ( KCMAP *map, const char *kbuf, size_t ksiz, const char *vbuf, size_t vsiz );
 
 
 /**
@@ -1320,7 +1331,7 @@ void kcmapset(KCMAP* map, const char* kbuf, size_t ksiz, const char* vbuf, size_
  * @note If no record corresponds to the key, a new record is created.  If the corresponding
  * record exists, the record is not modified and false is returned.
  */
-int32_t kcmapadd(KCMAP* map, const char* kbuf, size_t ksiz, const char* vbuf, size_t vsiz);
+int32_t kcmapadd ( KCMAP *map, const char *kbuf, size_t ksiz, const char *vbuf, size_t vsiz );
 
 
 /**
@@ -1334,7 +1345,7 @@ int32_t kcmapadd(KCMAP* map, const char* kbuf, size_t ksiz, const char* vbuf, si
  * @note If no record corresponds to the key, no new record is created and false is returned.
  * If the corresponding record exists, the value is modified.
  */
-int32_t kcmapreplace(KCMAP* map, const char* kbuf, size_t ksiz, const char* vbuf, size_t vsiz);
+int32_t kcmapreplace ( KCMAP *map, const char *kbuf, size_t ksiz, const char *vbuf, size_t vsiz );
 
 
 /**
@@ -1347,7 +1358,7 @@ int32_t kcmapreplace(KCMAP* map, const char* kbuf, size_t ksiz, const char* vbuf
  * @note If no record corresponds to the key, a new record is created.  If the corresponding
  * record exists, the given value is appended at the end of the existing value.
  */
-void kcmapappend(KCMAP* map, const char* kbuf, size_t ksiz, const char* vbuf, size_t vsiz);
+void kcmapappend ( KCMAP *map, const char *kbuf, size_t ksiz, const char *vbuf, size_t vsiz );
 
 
 /**
@@ -1358,7 +1369,7 @@ void kcmapappend(KCMAP* map, const char* kbuf, size_t ksiz, const char* vbuf, si
  * @return true on success, or false on failure.
  * @note If no record corresponds to the key, false is returned.
  */
-int32_t kcmapremove(KCMAP* map, const char* kbuf, size_t ksiz);
+int32_t kcmapremove ( KCMAP *map, const char *kbuf, size_t ksiz );
 
 
 /**
@@ -1370,14 +1381,14 @@ int32_t kcmapremove(KCMAP* map, const char* kbuf, size_t ksiz);
  * value is assigned.
  * @return the pointer to the value region of the corresponding record, or NULL on failure.
  */
-const char* kcmapget(KCMAP* map, const char* kbuf, size_t ksiz, size_t* sp);
+const char *kcmapget ( KCMAP *map, const char *kbuf, size_t ksiz, size_t *sp );
 
 
 /**
  * Remove all records.
  * @param map the map object.
  */
-void kcmapclear(KCMAP* map);
+void kcmapclear ( KCMAP *map );
 
 
 /**
@@ -1385,7 +1396,7 @@ void kcmapclear(KCMAP* map);
  * @param map the map object.
  * @return the number of records.
  */
-size_t kcmapcount(KCMAP* map);
+size_t kcmapcount ( KCMAP *map );
 
 
 /**
@@ -1397,14 +1408,14 @@ size_t kcmapcount(KCMAP* map);
  * @note This object will not be invalidated even when the map object is updated once.
  * However, phantom records may be retrieved if they are removed after creation of each iterator.
  */
-KCMAPITER* kcmapiterator(KCMAP* map);
+KCMAPITER *kcmapiterator ( KCMAP *map );
 
 
 /**
  * Destroy an iterator object.
  * @param iter the iterator object.
  */
-void kcmapiterdel(KCMAPITER* iter);
+void kcmapiterdel ( KCMAPITER *iter );
 
 
 /**
@@ -1414,7 +1425,7 @@ void kcmapiterdel(KCMAPITER* iter);
  * value is assigned.
  * @return the pointer to the key region of the current record, or NULL on failure.
  */
-const char* kcmapitergetkey(KCMAPITER* iter, size_t* sp);
+const char *kcmapitergetkey ( KCMAPITER *iter, size_t *sp );
 
 
 /**
@@ -1424,7 +1435,7 @@ const char* kcmapitergetkey(KCMAPITER* iter, size_t* sp);
  * value is assigned.
  * @return the pointer to the value region of the current record, or NULL on failure.
  */
-const char* kcmapitergetvalue(KCMAPITER* iter, size_t* sp);
+const char *kcmapitergetvalue ( KCMAPITER *iter, size_t *sp );
 
 
 /**
@@ -1438,14 +1449,14 @@ const char* kcmapitergetvalue(KCMAPITER* iter, size_t* sp);
  * assigned.
  * @return the pointer to the key region, or NULL on failure.
  */
-const char* kcmapiterget(KCMAPITER* iter, size_t* ksp, const char** vbp, size_t* vsp);
+const char *kcmapiterget ( KCMAPITER *iter, size_t *ksp, const char **vbp, size_t *vsp );
 
 
 /**
  * Step the cursor to the next record.
  * @param iter the iterator object.
  */
-void kcmapiterstep(KCMAPITER* iter);
+void kcmapiterstep ( KCMAPITER *iter );
 
 
 /**
@@ -1457,14 +1468,14 @@ void kcmapiterstep(KCMAPITER* iter);
  * @note This object will not be invalidated even when the map object is updated once.
  * However, phantom records may be retrieved if they are removed after creation of each sorter.
  */
-KCMAPSORT* kcmapsorter(KCMAP* map);
+KCMAPSORT *kcmapsorter ( KCMAP *map );
 
 
 /**
  * Destroy an sorter object.
  * @param sort the sorter object.
  */
-void kcmapsortdel(KCMAPSORT* sort);
+void kcmapsortdel ( KCMAPSORT *sort );
 
 
 /**
@@ -1474,7 +1485,7 @@ void kcmapsortdel(KCMAPSORT* sort);
  * value is assigned.
  * @return the pointer to the key region of the current record, or NULL on failure.
  */
-const char* kcmapsortgetkey(KCMAPSORT* sort, size_t* sp);
+const char *kcmapsortgetkey ( KCMAPSORT *sort, size_t *sp );
 
 
 /**
@@ -1484,7 +1495,7 @@ const char* kcmapsortgetkey(KCMAPSORT* sort, size_t* sp);
  * value is assigned.
  * @return the pointer to the value region of the current record, or NULL on failure.
  */
-const char* kcmapsortgetvalue(KCMAPSORT* sort, size_t* sp);
+const char *kcmapsortgetvalue ( KCMAPSORT *sort, size_t *sp );
 
 
 /**
@@ -1498,21 +1509,22 @@ const char* kcmapsortgetvalue(KCMAPSORT* sort, size_t* sp);
  * assigned.
  * @return the pointer to the key region, or NULL on failure.
  */
-const char* kcmapsortget(KCMAPSORT* sort, size_t* ksp, const char** vbp, size_t* vsp);
+const char *kcmapsortget ( KCMAPSORT *sort, size_t *ksp, const char **vbp, size_t *vsp );
 
 
 /**
  * Step the cursor to the next record.
  * @param sort the sorter object.
  */
-void kcmapsortstep(KCMAPSORT* sort);
+void kcmapsortstep ( KCMAPSORT *sort );
 
 
 /**
  * C wrapper of memory-saving string hash map.
  */
-typedef struct {
-  void* list;                            /**< dummy member */
+typedef struct
+{
+    void *list;                            /**< dummy member */
 } KCLIST;
 
 
@@ -1522,14 +1534,14 @@ typedef struct {
  * @note The object of the return value should be released with the kclistdel function when it is
  * no longer in use.
  */
-KCLIST* kclistnew();
+KCLIST *kclistnew();
 
 
 /**
  * Destroy a list object.
  * @param list the list object.
  */
-void kclistdel(KCLIST* list);
+void kclistdel ( KCLIST *list );
 
 
 /**
@@ -1538,7 +1550,7 @@ void kclistdel(KCLIST* list);
  * @param buf the pointer to the record region.
  * @param size the size of the record region.
  */
-void kclistpush(KCLIST* list, const char* buf, size_t size);
+void kclistpush ( KCLIST *list, const char *buf, size_t size );
 
 
 /**
@@ -1546,7 +1558,7 @@ void kclistpush(KCLIST* list, const char* buf, size_t size);
  * @param list the list object.
  * @return true if the operation success, or false if there is no record in the list.
  */
-int32_t kclistpop(KCLIST* list);
+int32_t kclistpop ( KCLIST *list );
 
 
 /**
@@ -1555,7 +1567,7 @@ int32_t kclistpop(KCLIST* list);
  * @param buf the pointer to the record region.
  * @param size the size of the record region.
  */
-void kclistunshift(KCLIST* list, const char* buf, size_t size);
+void kclistunshift ( KCLIST *list, const char *buf, size_t size );
 
 
 /**
@@ -1563,7 +1575,7 @@ void kclistunshift(KCLIST* list, const char* buf, size_t size);
  * @param list the list object.
  * @return true if the operation success, or false if there is no record in the list.
  */
-int32_t kclistshift(KCLIST* list);
+int32_t kclistshift ( KCLIST *list );
 
 
 /**
@@ -1574,7 +1586,7 @@ int32_t kclistshift(KCLIST* list);
  * @param idx the index of the position.  It must be equal to or less than the number of
  * records.
  */
-void kclistinsert(KCLIST* list, const char* buf, size_t size, size_t idx);
+void kclistinsert ( KCLIST *list, const char *buf, size_t size, size_t idx );
 
 
 /**
@@ -1582,7 +1594,7 @@ void kclistinsert(KCLIST* list, const char* buf, size_t size, size_t idx);
  * @param list the list object.
  * @param idx the index of the position.  It must be less than the number of records.
  */
-void kclistremove(KCLIST* list, size_t idx);
+void kclistremove ( KCLIST *list, size_t idx );
 
 
 /**
@@ -1593,14 +1605,14 @@ void kclistremove(KCLIST* list, size_t idx);
  * value is assigned.
  * @return the pointer to the region of the retrieved record.
  */
-const char* kclistget(KCLIST* list, size_t idx, size_t* sp);
+const char *kclistget ( KCLIST *list, size_t idx, size_t *sp );
 
 
 /**
  * Remove all records.
  * @param list the list object.
  */
-void kclistclear(KCLIST* list);
+void kclistclear ( KCLIST *list );
 
 
 /**
@@ -1608,7 +1620,7 @@ void kclistclear(KCLIST* list);
  * @param list the list object.
  * @return the number of records.
  */
-size_t kclistcount(KCLIST* list);
+size_t kclistcount ( KCLIST *list );
 
 
 #if defined(__cplusplus)
