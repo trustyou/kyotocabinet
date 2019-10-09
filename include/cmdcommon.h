@@ -1,8 +1,6 @@
 /*************************************************************************************************
  * Common symbols for command line utilities
  *                                                               Copyright (C) 2009-2012 FAL Labs
- *                                                               Copyright (C) 2013-2017 Cloudflare Inc.
- *                                                               Copyright (C) 2018-2019 TrustYou GmbH
  * This file is part of Kyoto Cabinet.
  * This program is free software: you can redistribute it and/or modify it under the terms of
  * the GNU General Public License as published by the Free Software Foundation, either version
@@ -60,10 +58,10 @@ const size_t RECBUFSIZL = 1024;          // buffer size for a long record
 
 
 // global variables
-uint64_t g_rnd_x = 123456789;
-uint64_t g_rnd_y = 362436069;
-uint64_t g_rnd_z = 521288629;
-uint64_t g_rnd_w = 88675123;
+static uint64_t g_rnd_x = 123456789;
+static uint64_t g_rnd_y = 362436069;
+static uint64_t g_rnd_z = 521288629;
+static uint64_t g_rnd_w = 88675123;
 
 
 // function prototypes
