@@ -14,10 +14,9 @@
  * If not, see <http://www.gnu.org/licenses/>.
  *************************************************************************************************/
 
+#ifndef _KCFORESTTEST_H                        // duplication check
+#define _KCFORESTTEST_H
 
-#include "kcforesttest.h"
+int kcforesttest ( int argc, char **argv );
 
-// main routine
-int main(int argc, char** argv) {
-	return kcforesttest(argc, argv);
-}
+#endif

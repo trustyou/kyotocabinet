@@ -1,5 +1,5 @@
 /*************************************************************************************************
- * The test cases of the directory tree database
+ * The test cases of the cache tree database
  *                                                               Copyright (C) 2009-2012 FAL Labs
  *                                                               Copyright (C) 2013-2017 Cloudflare Inc.
  *                                                               Copyright (C) 2018-2019 TrustYou GmbH
@@ -14,10 +14,9 @@
  * If not, see <http://www.gnu.org/licenses/>.
  *************************************************************************************************/
 
+#ifndef _KCGRASSTEST_H                        // duplication check
+#define _KCGRASSTEST_H
 
-#include "kcforesttest.h"
+int kcgrasstest ( int argc, char **argv );
 
-// main routine
-int main(int argc, char** argv) {
-	return kcforesttest(argc, argv);
-}
+#endif
