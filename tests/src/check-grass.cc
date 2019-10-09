@@ -22,17 +22,17 @@
 
 // main routine
 int main(int argc, char** argv) {
-        removeCasket();
+    removeCasket();
 
-        assert ( submitArgsToTestFunction ( kcgrasstest, "order -etc -bnum 5000 10000" ) == 0 );
-        assert ( submitArgsToTestFunction ( kcgrasstest, "order -th 4 -bnum 5000 10000" ) == 0 );
-        assert ( submitArgsToTestFunction ( kcgrasstest, "order -th 4 -rnd -etc -bnum 5000 10000" ) == 0 );
-        assert ( submitArgsToTestFunction ( kcgrasstest, "order -th 4 -rnd -etc -bnum 5000 10000" ) == 0 );
-        assert ( submitArgsToTestFunction ( kcgrasstest, "order -th 4 -rnd -etc -tran -tc -bnum 5000 -pccap 10k -rcd 500" ) == 0 );
-        assert ( submitArgsToTestFunction ( kcgrasstest, "wicked -bnum 5000 10000" ) == 0 );
-        assert ( submitArgsToTestFunction ( kcgrasstest, "wicked -th 4 -it 4 -tc -bnum 5000 -pccap 10k -rcd 1000" ) == 0 );
-        assert ( submitArgsToTestFunction ( kcgrasstest, "tran -bnum 500 10000" ) == 0 );
-        assert ( submitArgsToTestFunction ( kcgrasstest, "tran -th 2 -it 4 -tc -bnum 5000 -pccap 10k -rcd 5000" ) == 0 );
+    assert ( submitArgsToTestFunction ( kcgrasstest, "order -etc -bnum 5000 10000" ) == 0 );
+    assert ( submitArgsToTestFunction ( kcgrasstest, "order -th 4 -bnum 5000 10000" ) == 0 );
+    assert ( submitArgsToTestFunction ( kcgrasstest, "order -th 4 -rnd -etc -bnum 5000 10000" ) == 0 );
+    assert ( submitArgsToTestFunction ( kcgrasstest, "order -th 4 -rnd -etc -bnum 5000 10000" ) == 0 );
+    assert ( submitArgsToTestFunction ( kcgrasstest, "order -th 4 -rnd -etc -tran -tc -bnum 5000 -pccap 10k -rcd 500" ) == 0 );
+    assert ( submitArgsToTestFunction ( kcgrasstest, "wicked -bnum 5000 10000" ) == 0 );
+    assert ( submitArgsToTestFunction ( kcgrasstest, "wicked -th 4 -it 4 -tc -bnum 5000 -pccap 10k -rcd 1000" ) == 0 );
+    assert ( submitArgsToTestFunction ( kcgrasstest, "tran -bnum 500 10000" ) == 0 );
+    assert ( submitArgsToTestFunction ( kcgrasstest, "tran -th 2 -it 4 -tc -bnum 5000 -pccap 10k -rcd 5000" ) == 0 );
 
-        return 0;
+    return 0;
 }

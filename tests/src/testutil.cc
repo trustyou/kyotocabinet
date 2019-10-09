@@ -77,7 +77,7 @@ int submitArgsToTestFunction_private ( int ( *testFunc ) ( int, char** ), std::s
     for ( int i = 0; i < argc; i++ ) {
         paramCharVector[i] = ( char * ) paramVector[i].data();
     }
-    
+
     return testFunc ( argc, paramCharVector.data() );
 }
 

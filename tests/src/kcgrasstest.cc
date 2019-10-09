@@ -19,5 +19,5 @@
 
 // main routine
 int main(int argc, char** argv) {
-	return kcgrasstest(argc, argv);
+    return kcgrasstest(argc, argv);
 }

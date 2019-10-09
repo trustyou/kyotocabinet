@@ -22,17 +22,17 @@
 
 // main routine
 int main(int argc, char** argv) {
-        removeCasket();
+    removeCasket();
 
-        assert ( submitArgsToTestFunction ( kcstashtest, "order -etc -bnum 5000 10000" ) == 0 );
-        assert ( submitArgsToTestFunction ( kcstashtest, "order -th 4 -bnum 5000 10000" ) == 0 );
-        assert ( submitArgsToTestFunction ( kcstashtest, "order -th 4 -rnd -etc -bnum 5000 10000" ) == 0 );
-        assert ( submitArgsToTestFunction ( kcstashtest, "order -th 4 -rnd -etc -bnum 5000 10000" ) == 0 );
-        assert ( submitArgsToTestFunction ( kcstashtest, "order -th 4 -rnd -etc -tran -bnum 5000 10000" ) == 0 );
-        assert ( submitArgsToTestFunction ( kcstashtest, "wicked -bnum 5000 10000" ) == 0 );
-        assert ( submitArgsToTestFunction ( kcstashtest, "wicked -th 4 -it 4 -bnum 5000 10000" ) == 0 );
-        assert ( submitArgsToTestFunction ( kcstashtest, "tran -bnum 5000 10000" ) == 0 );
-        assert ( submitArgsToTestFunction ( kcstashtest, "tran -th 2 -it 4 -bnum 5000 10000" ) == 0 );
+    assert ( submitArgsToTestFunction ( kcstashtest, "order -etc -bnum 5000 10000" ) == 0 );
+    assert ( submitArgsToTestFunction ( kcstashtest, "order -th 4 -bnum 5000 10000" ) == 0 );
+    assert ( submitArgsToTestFunction ( kcstashtest, "order -th 4 -rnd -etc -bnum 5000 10000" ) == 0 );
+    assert ( submitArgsToTestFunction ( kcstashtest, "order -th 4 -rnd -etc -bnum 5000 10000" ) == 0 );
+    assert ( submitArgsToTestFunction ( kcstashtest, "order -th 4 -rnd -etc -tran -bnum 5000 10000" ) == 0 );
+    assert ( submitArgsToTestFunction ( kcstashtest, "wicked -bnum 5000 10000" ) == 0 );
+    assert ( submitArgsToTestFunction ( kcstashtest, "wicked -th 4 -it 4 -bnum 5000 10000" ) == 0 );
+    assert ( submitArgsToTestFunction ( kcstashtest, "tran -bnum 5000 10000" ) == 0 );
+    assert ( submitArgsToTestFunction ( kcstashtest, "tran -th 2 -it 4 -bnum 5000 10000" ) == 0 );
 
-        return 0;
+    return 0;
 }

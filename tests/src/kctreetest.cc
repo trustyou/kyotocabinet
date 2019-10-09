@@ -19,5 +19,5 @@
 
 // main routine
 int main(int argc, char** argv) {
-	return kctreetest(argc, argv);
+    return kctreetest(argc, argv);
 }

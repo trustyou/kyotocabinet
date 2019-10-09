@@ -23,22 +23,22 @@
 // main routine
 int main ( int argc, char **argv )
 {
-	removeCasket();
+    removeCasket();
 
-	assert ( submitArgsToTestFunction (kclangctest, "order casket.kch#bnum=5000#msiz=50000 10000") == 0);
-	assert ( submitArgsToTestFunction (kclangctest, "order -etc casket.kch#bnum=5000#msiz=50000#dfunit=2 10000") == 0);
-	assert ( submitArgsToTestFunction (kclangctest, "order -rnd -etc casket.kch#bnum=5000#msiz=50000#dfunit=2 10000") == 0);
-	assert ( submitArgsToTestFunction (kclangctest, "order -rnd -etc -oat -tran casket.kch#bnum=5000#msiz=50000#dfunit=2#zcomp=arcz 10000") == 0);
-	assert ( submitArgsToTestFunction (kclangctest, "index casket.kct#bnum=5000#msiz=50000 10000") == 0);
-	assert ( submitArgsToTestFunction (kclangctest, "index -etc casket.kct#bnum=5000#msiz=50000#dfunit=2 10000") == 0);
-	assert ( submitArgsToTestFunction (kclangctest, "index -rnd -etc casket.kct#bnum=5000#msiz=50000#dfunit=2 10000") == 0);
-	assert ( submitArgsToTestFunction (kclangctest, "index -rnd -etc -oat casket.kct#bnum=5000#msiz=50000#dfunit=2#zcomp=arcz 10000") == 0);
-	assert ( submitArgsToTestFunction (kclangctest, "map 10000") == 0);
-	assert ( submitArgsToTestFunction (kclangctest, "map -etc -bnum 1000 10000") == 0);
-	assert ( submitArgsToTestFunction (kclangctest, "map -etc -rnd -bnum 1000 10000") == 0);
-	assert ( submitArgsToTestFunction (kclangctest, "list 10000") == 0);
-	assert ( submitArgsToTestFunction (kclangctest, "list -etc 10000") == 0);
-	assert ( submitArgsToTestFunction (kclangctest, "list -etc -rnd 10000") == 0);
+    assert ( submitArgsToTestFunction (kclangctest, "order casket.kch#bnum=5000#msiz=50000 10000") == 0);
+    assert ( submitArgsToTestFunction (kclangctest, "order -etc casket.kch#bnum=5000#msiz=50000#dfunit=2 10000") == 0);
+    assert ( submitArgsToTestFunction (kclangctest, "order -rnd -etc casket.kch#bnum=5000#msiz=50000#dfunit=2 10000") == 0);
+    assert ( submitArgsToTestFunction (kclangctest, "order -rnd -etc -oat -tran casket.kch#bnum=5000#msiz=50000#dfunit=2#zcomp=arcz 10000") == 0);
+    assert ( submitArgsToTestFunction (kclangctest, "index casket.kct#bnum=5000#msiz=50000 10000") == 0);
+    assert ( submitArgsToTestFunction (kclangctest, "index -etc casket.kct#bnum=5000#msiz=50000#dfunit=2 10000") == 0);
+    assert ( submitArgsToTestFunction (kclangctest, "index -rnd -etc casket.kct#bnum=5000#msiz=50000#dfunit=2 10000") == 0);
+    assert ( submitArgsToTestFunction (kclangctest, "index -rnd -etc -oat casket.kct#bnum=5000#msiz=50000#dfunit=2#zcomp=arcz 10000") == 0);
+    assert ( submitArgsToTestFunction (kclangctest, "map 10000") == 0);
+    assert ( submitArgsToTestFunction (kclangctest, "map -etc -bnum 1000 10000") == 0);
+    assert ( submitArgsToTestFunction (kclangctest, "map -etc -rnd -bnum 1000 10000") == 0);
+    assert ( submitArgsToTestFunction (kclangctest, "list 10000") == 0);
+    assert ( submitArgsToTestFunction (kclangctest, "list -etc 10000") == 0);
+    assert ( submitArgsToTestFunction (kclangctest, "list -etc -rnd 10000") == 0);
 
-	return 0;
+    return 0;
 }
