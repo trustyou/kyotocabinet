@@ -14,8 +14,9 @@
  * If not, see <http://www.gnu.org/licenses/>.
  *************************************************************************************************/
 
-#include "kcdirmgr.h"
+#ifndef _KCDIRMGR_H                        // duplication check
+#define _KCDIRMGR_H
 
-int main ( int argc, char** argv ) {
-    return kcdirmgr ( argc, argv );
-}
+int kcdirmgr ( int argc, char **argv );
+
+#endif

@@ -1,5 +1,5 @@
 /*************************************************************************************************
- * The command line utility of the directory hash database
+ * The command line utility of the polymorphic database
  *                                                               Copyright (C) 2009-2012 FAL Labs
  *                                                               Copyright (C) 2013-2017 Cloudflare Inc.
  *                                                               Copyright (C) 2018-2019 TrustYou GmbH
@@ -14,8 +14,9 @@
  * If not, see <http://www.gnu.org/licenses/>.
  *************************************************************************************************/
 
-#include "kcdirmgr.h"
+#ifndef _KCPOLYMGR_H                        // duplication check
+#define _KCPOLYMGR_H
 
-int main ( int argc, char** argv ) {
-    return kcdirmgr ( argc, argv );
-}
+int kcpolymgr ( int argc, char **argv );
+
+#endif
