@@ -3,6 +3,13 @@ function(add_kc_test name)
 
   add_executable(${source_name} ${source_name} testutil.cc ${ARGV1})
   target_link_libraries(${source_name} kyotocabinet)
+
+  find_library(BOOST_FILESYSTEM_STATIC_LIBRARY libboost_filesystem.a)
+  target_link_libraries(${source_name} ${BOOST_FILESYSTEM_STATIC_LIBRARY})
+
+  find_library(BOOST_SYSTEM_STATIC_LIBRARY libboost_system.a)
+  target_link_libraries(${source_name} ${BOOST_SYSTEM_STATIC_LIBRARY})
+
   add_test(NAME ${source_name} COMMAND ${source_name} WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
  
   set(check_task "check-${name}")
@@ -19,7 +26,7 @@ add_kc_test(cache)
 add_kc_test(grass)
 add_kc_test(hash ../src/kchashmgr_impl.cc)
 add_kc_test(tree ../src/kctreemgr_impl.cc)
-add_kc_test(dir)
-add_kc_test(forest)
-add_kc_test(poly)
+add_kc_test(dir ../src/kcdirmgr_impl.cc)
+add_kc_test(forest ../src/kcforestmgr_impl.cc)
+add_kc_test(poly ../src/kcpolymgr_impl.cc)
 add_kc_test(langc)

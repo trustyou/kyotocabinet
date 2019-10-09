@@ -15,6 +15,6 @@
 #ifndef _KCUTILMGR_H                        // duplication check
 #define _KCUTILMGR_H
 
-int kcutilmgr(int argc, char** argv);
+int kcutilmgr ( int argc, char **argv );
 
 #endif

@@ -14,6 +14,7 @@
 
 #include "kcpolymgr.h"
 
-int main(int argc, char** argv) {
-  return kcpolymgr(argc, argv);
+int main ( int argc, char** argv )
+{
+    return kcpolymgr ( argc, argv );
 }

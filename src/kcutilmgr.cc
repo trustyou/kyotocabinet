@@ -14,6 +14,7 @@
 
 #include "kcutilmgr.h"
 
-int main(int argc, char** argv) {
-  return kcutilmgr(argc, argv);
+int main ( int argc, char** argv )
+{
+    return kcutilmgr ( argc, argv );
 }

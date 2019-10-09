@@ -16,7 +16,8 @@
 #include "kctextdb.h"
 #include "myconf.h"
 
-namespace kyotocabinet {                 // common namespace
+namespace kyotocabinet                   // common namespace
+{
 
 
 // There is no implementation now.

@@ -36,7 +36,7 @@ void removeCasket();
  * @param outputFileName the name of the file which will substitute stdout (use stdout if "")
  * @return the exit code of the test function
  */
-int submitArgsToTestFunction(int (*testFunc)(int, char**), std::string params,
-		std::string inputFileName = "", std::string outputFileName = "");
+int submitArgsToTestFunction ( int ( *testFunc ) ( int, char ** ), std::string params,
+                               std::string inputFileName = "", std::string outputFileName = "" );
 
 #endif

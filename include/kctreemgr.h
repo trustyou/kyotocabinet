@@ -15,6 +15,6 @@
 #ifndef _KCTREEMGR_H                        // duplication check
 #define _KCTREEMGR_H
 
-int kctreemgr(int argc, char** argv);
+int kctreemgr ( int argc, char **argv );
 
 #endif

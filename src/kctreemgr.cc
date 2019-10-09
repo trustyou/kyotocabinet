@@ -14,6 +14,7 @@
 
 #include "kctreemgr.h"
 
-int main(int argc, char** argv) {
-  return kctreemgr(argc, argv);
+int main ( int argc, char** argv )
+{
+    return kctreemgr ( argc, argv );
 }

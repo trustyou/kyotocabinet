@@ -15,6 +15,6 @@
 #ifndef _KCDIRMGR_H                        // duplication check
 #define _KCDIRMGR_H
 
-int kcdirmgr(int argc, char** argv);
+int kcdirmgr ( int argc, char **argv );
 
 #endif

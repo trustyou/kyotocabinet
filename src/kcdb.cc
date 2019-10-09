@@ -16,14 +16,15 @@
 #include "kcdb.h"
 #include "myconf.h"
 
-namespace kyotocabinet {                 // common namespace
+namespace kyotocabinet                   // common namespace
+{
 
 
 /** Special pointer for no operation. */
-const char* const DB::Visitor::NOP = (const char*)0;
+const char* const DB::Visitor::NOP = ( const char* ) 0;
 
 /** Special pointer to remove the record. */
-const char* const DB::Visitor::REMOVE = (const char*)1;
+const char* const DB::Visitor::REMOVE = ( const char* ) 1;
 
 
 }                                        // common namespace

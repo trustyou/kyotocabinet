@@ -15,6 +15,6 @@
 #ifndef _KCPOLYMGR_H                        // duplication check
 #define _KCPOLYMGR_H
 
-int kcpolymgr(int argc, char** argv);
+int kcpolymgr ( int argc, char **argv );
 
 #endif

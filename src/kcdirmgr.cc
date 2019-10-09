@@ -14,6 +14,7 @@
 
 #include "kcdirmgr.h"
 
-int main(int argc, char** argv) {
-	return kcdirmgr(argc, argv);
+int main ( int argc, char** argv )
+{
+    return kcdirmgr ( argc, argv );
 }

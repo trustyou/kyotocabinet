@@ -15,6 +15,6 @@
 #ifndef _KCHASHMGR_H                        // duplication check
 #define _KCHASHMGR_H
 
-int kchashmgr(int argc, char** argv);
+int kchashmgr ( int argc, char **argv );
 
 #endif

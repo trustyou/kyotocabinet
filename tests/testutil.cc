@@ -25,6 +25,7 @@
 #include <vector>
 
 #include "testutil.h"
+#include <boost/filesystem.hpp>
 
 /** The string "casket" */
 const std::string casket = "casket";
@@ -33,18 +34,24 @@ const std::string casket = "casket";
 const int casketLength = casket.length();
 
 /**
- * Remove all files in the current working directory, whose names begin with "casket"
+ * Remove all files in the current working directory, whose names contain "casket"
  */
-void removeCasket() {
-	struct dirent *DirEntry;
-	DIR* Dir = opendir(".");
+void removeCasket()
+{
+    std::vector < std::string > files_to_remove;
 
-	while (DirEntry = readdir(Dir)) { // @suppress("Assignment in condition")
-		std::string filename = DirEntry->d_name;
-		if (filename.compare(0, casketLength, casket) == 0) {
-			remove(filename.c_str());
-		}
-	}
+    boost::filesystem::path p ( "." );
+    boost::filesystem::directory_iterator end_it;
+    for ( boost::filesystem::directory_iterator it ( p ); it != end_it; ++it ) {
+        std::string filename = it->path().string();
+        if ( filename.find ( "casket" ) != std::string::npos ) {
+            files_to_remove.push_back ( filename );
+        }
+    }
+
+    for ( std::vector<std::string>::iterator it = files_to_remove.begin(); it != files_to_remove.end(); ++it ) {
+        boost::filesystem::remove_all ( *it );
+    }
 }
 
 /**
@@ -54,26 +61,27 @@ void removeCasket() {
  * @param params the command line parameters
  * @return the exit code of the test function
  */
-int submitArgsToTestFunction_private(int (*testFunc)(int, char**),
-		std::string params) {
+int submitArgsToTestFunction_private ( int ( *testFunc ) ( int, char** ),
+                                       std::string params )
+{
 
-	std::vector<std::string> paramVector;
-	paramVector.push_back("");
+    std::vector<std::string> paramVector;
+    paramVector.push_back ( "" );
 
-	std::istringstream iss(params);
-	std::string s;
-	while (getline(iss, s, ' ')) {
-		paramVector.push_back(s);
-	}
+    std::istringstream iss ( params );
+    std::string s;
+    while ( getline ( iss, s, ' ' ) ) {
+        paramVector.push_back ( s );
+    }
 
-	int argc = paramVector.size();
+    int argc = paramVector.size();
 
-	std::vector<char*> paramCharVector(paramVector.size());
-	for (int i = 0; i < argc; i++) {
-		paramCharVector[i] = (char *) paramVector[i].data();
-	}
+    std::vector<char*> paramCharVector ( paramVector.size() );
+    for ( int i = 0; i < argc; i++ ) {
+        paramCharVector[i] = ( char * ) paramVector[i].data();
+    }
 
-	return testFunc(argc, paramCharVector.data());
+    return testFunc ( argc, paramCharVector.data() );
 }
 
 /**
@@ -86,34 +94,35 @@ int submitArgsToTestFunction_private(int (*testFunc)(int, char**),
  * @param outputFileName the output file name
  * @return the exit code of the test function
  */
-int submitArgsToTestFunction(int (*testFunc)(int, char**), std::string params,
-		std::string inputFileName, std::string outputFileName) {
+int submitArgsToTestFunction ( int ( *testFunc ) ( int, char** ), std::string params,
+                               std::string inputFileName, std::string outputFileName )
+{
 
-	std::streambuf *coutbuf = std::cout.rdbuf();
-	std::streambuf *cinbuf = std::cin.rdbuf();
+    std::streambuf *coutbuf = std::cout.rdbuf();
+    std::streambuf *cinbuf = std::cin.rdbuf();
 
-	std::ostream * out =
-			outputFileName.empty() ?
-					&std::cout : new std::ofstream(outputFileName.c_str());
-	std::cout.rdbuf(out->rdbuf());
+    std::ostream * out =
+        outputFileName.empty() ?
+        &std::cout : new std::ofstream ( outputFileName.c_str() );
+    std::cout.rdbuf ( out->rdbuf() );
 
-	std::istream * in =
-			inputFileName.empty() ?
-					&std::cin : new std::ifstream(inputFileName.c_str());
-	std::cin.rdbuf(in->rdbuf());
+    std::istream * in =
+        inputFileName.empty() ?
+        &std::cin : new std::ifstream ( inputFileName.c_str() );
+    std::cin.rdbuf ( in->rdbuf() );
 
-	int result = submitArgsToTestFunction_private(testFunc, params);
-	
-	if (!(inputFileName.empty())) {
-		((std::ifstream*) in)->close();
-	}
+    int result = submitArgsToTestFunction_private ( testFunc, params );
 
-	if (!(outputFileName.empty())) {
-		((std::ofstream*) out)->close();
-	}
+    if ( ! ( inputFileName.empty() ) ) {
+        ( ( std::ifstream* ) in )->close();
+    }
 
-	std::cin.rdbuf(cinbuf);
-	std::cout.rdbuf(coutbuf);
+    if ( ! ( outputFileName.empty() ) ) {
+        ( ( std::ofstream* ) out )->close();
+    }
 
-	return result;
+    std::cin.rdbuf ( cinbuf );
+    std::cout.rdbuf ( coutbuf );
+
+    return result;
 }

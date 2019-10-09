@@ -15,6 +15,6 @@
 #ifndef _KCFORESTMGR_H                        // duplication check
 #define _KCFORESTMGR_H
 
-int kcforestmgr(int argc, char** argv);
+int kcforestmgr ( int argc, char **argv );
 
 #endif

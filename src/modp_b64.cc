@@ -45,7 +45,7 @@
 /* if on motoral, sun, ibm; uncomment this */
 /* #define WORDS_BIGENDIAN 1 */
 /* else for Intel, Amd; uncomment this */
-#undef WORDS_BIGENDIAN 
+#undef WORDS_BIGENDIAN
 
 #include "modp_b64_data.h"
 
@@ -68,55 +68,58 @@
 #define CHARPAD '\0'
 #endif
 
-size_t modp_b64_encode(char* dest, const char* str, size_t len)
+size_t modp_b64_encode ( char* dest, const char* str, size_t len )
 {
     size_t i = 0;
-    const uint8_t* s = (const uint8_t*) str;
-    uint8_t* p = (uint8_t*) dest;
+    const uint8_t* s = ( const uint8_t* ) str;
+    uint8_t* p = ( uint8_t* ) dest;
 
     /* unsigned here is important! */
     /* uint8_t is fastest on G4, amd */
     /* uint32_t is fastest on Intel */
     uint32_t t1, t2, t3;
 
-    if (len > 2) {
-        for (i = 0; i < len - 2; i += 3) {
-            t1 = s[i]; t2 = s[i+1]; t3 = s[i+2];
+    if ( len > 2 ) {
+        for ( i = 0; i < len - 2; i += 3 ) {
+            t1 = s[i];
+            t2 = s[i+1];
+            t3 = s[i+2];
             *p++ = e0[t1];
-            *p++ = e1[((t1 & 0x03) << 4) | ((t2 >> 4) & 0x0F)];
-            *p++ = e1[((t2 & 0x0F) << 2) | ((t3 >> 6) & 0x03)];
+            *p++ = e1[ ( ( t1 & 0x03 ) << 4 ) | ( ( t2 >> 4 ) & 0x0F )];
+            *p++ = e1[ ( ( t2 & 0x0F ) << 2 ) | ( ( t3 >> 6 ) & 0x03 )];
             *p++ = e2[t3];
         }
     }
 
-    switch (len - i) {
+    switch ( len - i ) {
     case 0:
         break;
     case 1:
         t1 = s[i];
         *p++ = e0[t1];
-        *p++ = e1[(t1 & 0x03) << 4];
+        *p++ = e1[ ( t1 & 0x03 ) << 4];
         *p++ = CHARPAD;
         *p++ = CHARPAD;
         break;
     default: /* case 2 */
-        t1 = s[i]; t2 = s[i+1];
+        t1 = s[i];
+        t2 = s[i+1];
         *p++ = e0[t1];
-        *p++ = e1[((t1 & 0x03) << 4) | ((t2 >> 4) & 0x0F)];
-        *p++ = e2[(t2 & 0x0F) << 2];
+        *p++ = e1[ ( ( t1 & 0x03 ) << 4 ) | ( ( t2 >> 4 ) & 0x0F )];
+        *p++ = e2[ ( t2 & 0x0F ) << 2];
         *p++ = CHARPAD;
     }
 
     *p = '\0';
-    return (size_t)(p - (uint8_t*)dest);
+    return ( size_t ) ( p - ( uint8_t* ) dest );
 }
 
 #ifdef WORDS_BIGENDIAN   /* BIG ENDIAN -- SUN / IBM / MOTOROLA */
-size_t modp_b64_decode(char* dest, const char* src, size_t len)
+size_t modp_b64_decode ( char* dest, const char* src, size_t len )
 {
     size_t i;
     size_t leftover = len % 4;
-    size_t chunks = (leftover == 0) ? len / 4 - 1 : len /4;
+    size_t chunks = ( leftover == 0 ) ? len / 4 - 1 : len /4;
 
     uint8_t* p;
     uint32_t x;
@@ -124,78 +127,78 @@ size_t modp_b64_decode(char* dest, const char* src, size_t len)
     uint32_t* srcInt;
     uint32_t y;
 
-    if (len == 0) return 0;
+    if ( len == 0 ) return 0;
 
 #ifdef DOPAD
     /* if padding is used, then the message must be at least
        4 chars and be a multiple of 4.
        there can be at most 2 pad chars at the end */
-    if (len < 4 || (len % 4 != 0)) return -1;
-    if (src[len-1] == CHARPAD) {
+    if ( len < 4 || ( len % 4 != 0 ) ) return -1;
+    if ( src[len-1] == CHARPAD ) {
         len--;
-        if (src[len -1] == CHARPAD) {
+        if ( src[len -1] == CHARPAD ) {
             len--;
         }
     }
 #endif  /* DOPAD */
 
     leftover = len % 4;
-    chunks = (leftover == 0) ? len / 4 - 1 : len /4;
+    chunks = ( leftover == 0 ) ? len / 4 - 1 : len /4;
 
-    p = (uint8_t*) dest;
+    p = ( uint8_t* ) dest;
     x = 0;
-    destInt = (uint32_t*) p;
-    srcInt = (uint32_t*) src;
+    destInt = ( uint32_t* ) p;
+    srcInt = ( uint32_t* ) src;
     y = *srcInt++;
-    for (i = 0; i < chunks; ++i) {
+    for ( i = 0; i < chunks; ++i ) {
         x = d0[y >> 24 & 0xff] | d1[y >> 16 & 0xff] |
             d2[y >> 8 & 0xff] | d3[y & 0xff];
 
-        if (x >= BADCHAR)  return -1;
+        if ( x >= BADCHAR )  return -1;
         *destInt = x << 8;
         p += 3;
-        destInt = (uint32_t*)p;
+        destInt = ( uint32_t* ) p;
         y = *srcInt++;
     }
 
-    switch (leftover) {
+    switch ( leftover ) {
     case 0:
         x = d0[y >> 24 & 0xff] | d1[y >> 16 & 0xff] |
             d2[y >>  8 & 0xff] | d3[y & 0xff];
-        if (x >= BADCHAR)  return -1;
-        *p++ = ((uint8_t*)&x)[1];
-        *p++ = ((uint8_t*)&x)[2];
-        *p = ((uint8_t*)&x)[3];
-        return (chunks+1)*3;
+        if ( x >= BADCHAR )  return -1;
+        *p++ = ( ( uint8_t* ) &x ) [1];
+        *p++ = ( ( uint8_t* ) &x ) [2];
+        *p = ( ( uint8_t* ) &x ) [3];
+        return ( chunks+1 ) *3;
 #ifndef DOPAD
     case 1:  /* with padding this is an impossible case */
         x = d3[y >> 24];
-        *p =  (uint8_t)x;
+        *p = ( uint8_t ) x;
         break;
 #endif
     case 2:
-        x = d3[y >> 24] *64 + d3[(y >> 16) & 0xff];
-        *p =  (uint8_t)(x >> 4);
+        x = d3[y >> 24] *64 + d3[ ( y >> 16 ) & 0xff];
+        *p = ( uint8_t ) ( x >> 4 );
         break;
     default:  /* case 3 */
-        x = (d3[y >> 24] *64 + d3[(y >> 16) & 0xff])*64 +
-            d3[(y >> 8) & 0xff];
-        *p++ = (uint8_t) (x >> 10);
-        *p = (uint8_t) (x >> 2);
+        x = ( d3[y >> 24] *64 + d3[ ( y >> 16 ) & 0xff] ) *64 +
+            d3[ ( y >> 8 ) & 0xff];
+        *p++ = ( uint8_t ) ( x >> 10 );
+        *p = ( uint8_t ) ( x >> 2 );
         break;
     }
 
-    if (x >= BADCHAR) return -1;
-    return 3*chunks + (6*leftover)/8;
+    if ( x >= BADCHAR ) return -1;
+    return 3*chunks + ( 6*leftover ) /8;
 }
 
 #else /* LITTLE  ENDIAN -- INTEL AND FRIENDS */
 
-size_t modp_b64_decode(char* dest, const char* src, size_t len)
+size_t modp_b64_decode ( char* dest, const char* src, size_t len )
 {
     size_t i;
     size_t leftover = len % 4;
-    size_t chunks = (leftover == 0) ? len / 4 - 1 : len /4;
+    size_t chunks = ( leftover == 0 ) ? len / 4 - 1 : len /4;
 
     uint8_t* p;
     uint32_t x;
@@ -203,87 +206,88 @@ size_t modp_b64_decode(char* dest, const char* src, size_t len)
     const uint32_t* srcInt;
     uint32_t y;
 
-    if (len == 0) return 0;
+    if ( len == 0 ) return 0;
 
 #ifdef DOPAD
     /*
      * if padding is used, then the message must be at least
      * 4 chars and be a multiple of 4
      */
-    if (len < 4 || (len % 4 != 0)) {
-        return (size_t)-1; /* error */
+    if ( len < 4 || ( len % 4 != 0 ) ) {
+        return ( size_t )-1; /* error */
     }
     /* there can be at most 2 pad chars at the end */
-    if (src[len-1] == CHARPAD) {
+    if ( src[len-1] == CHARPAD ) {
         len--;
-        if (src[len -1] == CHARPAD) {
+        if ( src[len -1] == CHARPAD ) {
             len--;
         }
     }
 #endif
 
     leftover = len % 4;
-    chunks = (leftover == 0) ? len / 4 - 1 : len /4;
+    chunks = ( leftover == 0 ) ? len / 4 - 1 : len /4;
 
-    p = (uint8_t*) dest;
+    p = ( uint8_t* ) dest;
     x = 0;
-    destInt = (uint32_t*) p;
-    srcInt = (const uint32_t*) src;
+    destInt = ( uint32_t* ) p;
+    srcInt = ( const uint32_t* ) src;
     y = *srcInt++;
-    for (i = 0; i < chunks; ++i) {
+    for ( i = 0; i < chunks; ++i ) {
         x = d0[y & 0xff] |
-            d1[(y >> 8) & 0xff] |
-            d2[(y >> 16) & 0xff] |
-            d3[(y >> 24) & 0xff];
+            d1[ ( y >> 8 ) & 0xff] |
+            d2[ ( y >> 16 ) & 0xff] |
+            d3[ ( y >> 24 ) & 0xff];
 
-        if (x >= BADCHAR) {
-            return (size_t)-1;
+        if ( x >= BADCHAR ) {
+            return ( size_t )-1;
         }
         *destInt = x ;
         p += 3;
-        destInt = (uint32_t*)p;
-        y = *srcInt++;}
+        destInt = ( uint32_t* ) p;
+        y = *srcInt++;
+    }
 
 
-    switch (leftover) {
+    switch ( leftover ) {
     case 0:
         x = d0[y & 0xff] |
-            d1[(y >> 8) & 0xff] |
-            d2[(y >> 16) & 0xff] |
-            d3[(y >> 24) & 0xff];
+            d1[ ( y >> 8 ) & 0xff] |
+            d2[ ( y >> 16 ) & 0xff] |
+            d3[ ( y >> 24 ) & 0xff];
 
-        if (x >= BADCHAR) {
-            return (size_t)-1;
+        if ( x >= BADCHAR ) {
+            return ( size_t )-1;
         }
-        *p++ =  ((uint8_t*)(&x))[0];
-        *p++ =  ((uint8_t*)(&x))[1];
-        *p =    ((uint8_t*)(&x))[2];
-        return (chunks+1)*3;
+        *p++ = ( ( uint8_t* ) ( &x ) ) [0];
+        *p++ = ( ( uint8_t* ) ( &x ) ) [1];
+        *p = ( ( uint8_t* ) ( &x ) ) [2];
+        return ( chunks+1 ) *3;
         break;
 #ifndef DOPAD
     case 1:  /* with padding this is an impossible case */
         x = d0[y & 0xff];
-        *p = *((uint8_t*)(&x)); // i.e. first char/byte in int
+        *p = * ( ( uint8_t* ) ( &x ) ); // i.e. first char/byte in int
         break;
 #endif
     case 2: /* case 2, 1  output byte */
         x = d0[y & 0xff] | d1[y >> 8 & 0xff];
-        *p = *((uint8_t*)(&x)); /* i.e. first char */
+        *p = * ( ( uint8_t* ) ( &x ) ); /* i.e. first char */
         break;
     default: /* case 3, 2 output bytes */
         x = d0[y & 0xff] |
             d1[y >> 8 & 0xff ] |
             d2[y >> 16 & 0xff];  /* 0x3c */
-        *p++ =  ((uint8_t*)(&x))[0];
-        *p =  ((uint8_t*)(&x))[1];
+        *p++ = ( ( uint8_t* ) ( &x ) ) [0];
+        *p = ( ( uint8_t* ) ( &x ) ) [1];
         break;
     }
 
-    if (x >= BADCHAR) {
-        return (size_t)-1;
+    if ( x >= BADCHAR ) {
+        return ( size_t )-1;
     }
 
-    return 3*chunks + (6*leftover)/8;
+    return 3*chunks + ( 6*leftover ) /8;
 }
 
 #endif  /* if bigendian / else / endif */

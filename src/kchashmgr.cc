@@ -14,6 +14,7 @@
 
 #include "kchashmgr.h"
 
-int main(int argc, char** argv) {
-    return kchashmgr(argc, argv);
+int main ( int argc, char** argv )
+{
+    return kchashmgr ( argc, argv );
 }

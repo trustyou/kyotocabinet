@@ -14,6 +14,7 @@
 
 #include "kcforestmgr.h"
 
-int main(int argc, char** argv) {
-	return kcforestmgr(argc, argv);
+int main ( int argc, char** argv )
+{
+    return kcforestmgr ( argc, argv );
 }
