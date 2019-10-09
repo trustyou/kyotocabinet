@@ -39,7 +39,7 @@ link_libraries(-lz -lstdc++ -lpthread -lm -lc)
 
 # Kyotocabinet library
 
-add_library(kyotocabinet SHARED ${SOURCE_PATH}/kcutil.cc ${SOURCE_PATH}/kcthread.cc ${SOURCE_PATH}/kcfile.cc ${SOURCE_PATH}/kccompress.cc ${SOURCE_PATH}/kccompare.cc ${SOURCE_PATH}/kcmap.cc ${SOURCE_PATH}/kcregex.cc ${SOURCE_PATH}/kcdb.cc ${SOURCE_PATH}/kcplantdb.cc ${SOURCE_PATH}/kcprotodb.cc ${SOURCE_PATH}/kcstashdb.cc ${SOURCE_PATH}/kccachedb.cc ${SOURCE_PATH}/kchashdb.cc ${SOURCE_PATH}/kcdirdb.cc ${SOURCE_PATH}/kctextdb.cc ${SOURCE_PATH}/kcpolydb.cc ${SOURCE_PATH}/kcdbext.cc ${SOURCE_PATH}/kclangc.cc ${SOURCE_PATH}/modp_b64.cc)
+add_library(kyotocabinet ${SOURCE_PATH}/kcutil.cc ${SOURCE_PATH}/kcthread.cc ${SOURCE_PATH}/kcfile.cc ${SOURCE_PATH}/kccompress.cc ${SOURCE_PATH}/kccompare.cc ${SOURCE_PATH}/kcmap.cc ${SOURCE_PATH}/kcregex.cc ${SOURCE_PATH}/kcdb.cc ${SOURCE_PATH}/kcplantdb.cc ${SOURCE_PATH}/kcprotodb.cc ${SOURCE_PATH}/kcstashdb.cc ${SOURCE_PATH}/kccachedb.cc ${SOURCE_PATH}/kchashdb.cc ${SOURCE_PATH}/kcdirdb.cc ${SOURCE_PATH}/kctextdb.cc ${SOURCE_PATH}/kcpolydb.cc ${SOURCE_PATH}/kcdbext.cc ${SOURCE_PATH}/kclangc.cc ${SOURCE_PATH}/modp_b64.cc)
 
 set_target_properties(kyotocabinet PROPERTIES VERSION ${LIBRARY_VERSION} PUBLIC_HEADER "${INCLUDE_PATH}/kccommon.h;${INCLUDE_PATH}/kcutil.h;${INCLUDE_PATH}/kcthread.h;${INCLUDE_PATH}/kcfile.h;${INCLUDE_PATH}/kccompress.h;${INCLUDE_PATH}/kccompare.h;${INCLUDE_PATH}/kcmap.h;${INCLUDE_PATH}/kcregex.h;${INCLUDE_PATH}/kcdb.h;${INCLUDE_PATH}/kcplantdb.h;${INCLUDE_PATH}/kcprotodb.h;${INCLUDE_PATH}/kcstashdb.h;${INCLUDE_PATH}/kccachedb.h;${INCLUDE_PATH}/kchashdb.h;${INCLUDE_PATH}/kcdirdb.h;${INCLUDE_PATH}/kctextdb.h;${INCLUDE_PATH}/kcpolydb.h;${INCLUDE_PATH}/kcdbext.h;${INCLUDE_PATH}/kclangc.h")
 
@@ -65,5 +65,9 @@ target_link_libraries(kcpolymgr kyotocabinet)
 
 # Installation targets
 
-install(TARGETS kyotocabinet kcutilmgr kchashmgr kctreemgr kcdirmgr kcforestmgr kcpolymgr LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-
+install(TARGETS kyotocabinet kcutilmgr kchashmgr kctreemgr kcdirmgr kcforestmgr kcpolymgr
+	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+	PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
