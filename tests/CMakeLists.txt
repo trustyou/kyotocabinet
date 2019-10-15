@@ -24,7 +24,7 @@ include_directories(include ../include)
 
 function(add_kc_test_binary source_name)
   add_executable(${source_name} ${SOURCE_DIR}/${source_name} ${SOURCE_DIR}/${source_name}_impl)
-  target_link_libraries(${source_name} kyotocabinet)
+  target_link_libraries(${source_name} kyotocabinet-shared)
   install(TARGETS ${source_name} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 endfunction()
 

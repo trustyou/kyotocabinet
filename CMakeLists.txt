@@ -16,6 +16,8 @@ set(LIBREV "13")
 set(FMTVER "2")
 
 set(LIBRARY_NAME kyotocabinet)
+set(STATIC_LIBRARY_NAME ${LIBRARY_NAME}-static)
+set(SHARED_LIBRARY_NAME ${LIBRARY_NAME}-shared)
 set(LIBRARY_VERSION "${LIBVER}.${LIBREV}.${FMTVER}")
 
 set(SOURCE_PATH "src")
@@ -44,8 +46,8 @@ link_libraries(-lz -lstdc++ -lpthread -lm -lc)
 
 # Kyotocabinet library
 
-add_library(
-  ${LIBRARY_NAME}
+set(
+  libsrc
   ${SOURCE_PATH}/kcutil.cc
   ${SOURCE_PATH}/kcthread.cc
   ${SOURCE_PATH}/kcfile.cc
@@ -67,9 +69,15 @@ add_library(
   ${SOURCE_PATH}/modp_b64.cc
 )
 
-set_target_properties(
-  ${LIBRARY_NAME}
-  PROPERTIES VERSION ${LIBRARY_VERSION}
+add_library(${STATIC_LIBRARY_NAME} STATIC ${libsrc})
+add_library(${SHARED_LIBRARY_NAME} SHARED ${libsrc})
+
+SET_TARGET_PROPERTIES(${STATIC_LIBRARY_NAME} PROPERTIES OUTPUT_NAME ${LIBRARY_NAME} CLEAN_DIRECT_OUTPUT 1)
+SET_TARGET_PROPERTIES(
+  ${SHARED_LIBRARY_NAME}
+  PROPERTIES
+  OUTPUT_NAME ${LIBRARY_NAME}
+  VERSION ${LIBRARY_VERSION}
   PUBLIC_HEADER "${INCLUDE_PATH}/kccommon.h;${INCLUDE_PATH}/kcutil.h;${INCLUDE_PATH}/kcthread.h;${INCLUDE_PATH}/kcfile.h;${INCLUDE_PATH}/kccompress.h;${INCLUDE_PATH}/kccompare.h;${INCLUDE_PATH}/kcmap.h;${INCLUDE_PATH}/kcregex.h;${INCLUDE_PATH}/kcdb.h;${INCLUDE_PATH}/kcplantdb.h;${INCLUDE_PATH}/kcprotodb.h;${INCLUDE_PATH}/kcstashdb.h;${INCLUDE_PATH}/kccachedb.h;${INCLUDE_PATH}/kchashdb.h;${INCLUDE_PATH}/kcdirdb.h;${INCLUDE_PATH}/kctextdb.h;${INCLUDE_PATH}/kcpolydb.h;${INCLUDE_PATH}/kcdbext.h;${INCLUDE_PATH}/kclangc.h"
 )
 
@@ -79,7 +87,7 @@ set(BINARIES kcutilmgr kchashmgr kctreemgr kcdirmgr kcforestmgr kcpolymgr)
 
 function(add_binary name)
   add_executable(${name} ${SOURCE_PATH}/${name} ${SOURCE_PATH}/${name}_impl)
-  target_link_libraries(${name} ${LIBRARY_NAME})
+  target_link_libraries(${name} ${SHARED_LIBRARY_NAME})
 endfunction()
 
 foreach(binary ${BINARIES})
@@ -88,7 +96,7 @@ endforeach()
 
 # Installation targets
 
-install(TARGETS ${LIBRARY_NAME} ${BINARIES}
+install(TARGETS ${SHARED_LIBRARY_NAME} ${STATIC_LIBRARY_NAME} ${BINARIES}
 	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
